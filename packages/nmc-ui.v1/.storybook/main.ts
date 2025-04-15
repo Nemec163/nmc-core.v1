@@ -2,10 +2,6 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import { join, dirname } from 'path';
 import type { InlineConfig } from 'vite';
 
-/**
- * This function is used to resolve the absolute path of a package.
- * It is needed in projects that use Yarn PnP or are set up within a monorepo.
- */
 function getAbsolutePath(value: string): string {
   return dirname(require.resolve(join(value, 'package.json')));
 }
@@ -24,23 +20,22 @@ const config: StorybookConfig = {
     name: getAbsolutePath('@storybook/react-vite'),
     options: {},
   },
-viteFinal: async (config): Promise<InlineConfig> => {
-  return {
-    ...config,
-    base: '/ui/',
-    server: {
-      ...config.server,
-      host: '0.0.0.0',
-      strictPort: false,
-      hmr: {
-        clientPort: 443, // если HTTPS
+  viteFinal: async (config): Promise<InlineConfig> => {
+    return {
+      ...config,
+      base: '/ui/',
+      server: {
+        ...config.server,
+        host: '0.0.0.0',
+        strictPort: false,
+        hmr: {
+          clientPort: 443,
+        },
+        origin: 'https://nemec.app',
+        allowedHosts: ['nemec.app'],
       },
-      origin: 'https://nemec.app',
-      allowedHosts: ['nemec.app'], // ← вот это обязательно
-    },
-  };
-},
-
+    };
+  },
 };
 
 export default config;
