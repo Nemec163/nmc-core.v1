@@ -8,7 +8,7 @@
     "dev": "echo 'UI Kit dev mode (storybook/preview) coming soon'",
     "clean": "rm -rf dist",
     "storybook": "storybook dev -p 6006 --host 0.0.0.0 --no-open",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build --output-dir dist-storybook"
   },
   "dependencies": {
     "react": "^19.1.0",
