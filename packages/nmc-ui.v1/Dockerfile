@@ -2,18 +2,18 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+COPY ../../pnpm-lock.yaml ./pnpm-lock.yaml
+
 COPY . .
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
-COPY ../../pnpm-lock.yaml ./pnpm-lock.yaml
+
 RUN pnpm install --frozen-lockfile
+
 RUN pnpm build-storybook
 
 RUN pnpm add -g serve
 
 EXPOSE 6006
 
-RUN pnpm build-storybook
-RUN pnpm add -g serve
 CMD ["serve", "-s", "dist-storybook", "-l", "6006"]
-
