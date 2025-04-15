@@ -12,4 +12,7 @@ RUN pnpm add -g serve
 
 EXPOSE 6006
 
+RUN pnpm build-storybook
+RUN pnpm add -g serve
 CMD ["serve", "-s", "dist-storybook", "-l", "6006"]
+
