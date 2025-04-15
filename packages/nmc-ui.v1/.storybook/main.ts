@@ -1,42 +1,44 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { join, dirname } from 'path';
+import type { InlineConfig } from 'vite';
 
 /**
  * This function is used to resolve the absolute path of a package.
  * It is needed in projects that use Yarn PnP or are set up within a monorepo.
  */
-function getAbsolutePath(value: string): any {
+function getAbsolutePath(value: string): string {
   return dirname(require.resolve(join(value, 'package.json')));
 }
 
 const config: StorybookConfig = {
   stories: [
-    "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
+    '../src/**/*.mdx',
+    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   addons: [
     getAbsolutePath('@storybook/addon-essentials'),
     getAbsolutePath('@storybook/addon-onboarding'),
-    getAbsolutePath('@chromatic-com/storybook')
+    getAbsolutePath('@chromatic-com/storybook'),
   ],
   framework: {
     name: getAbsolutePath('@storybook/react-vite'),
-    options: {}
+    options: {},
   },
-
-  // 🛠️ Вот это добавляем:
-  viteFinal: async (viteConfig, { configType }) => {
-    viteConfig.server = {
-      ...viteConfig.server,
-      host: '0.0.0.0', // чтобы принимать внешний доступ
-      strictPort: false,
-      hmr: {
-        clientPort: 443, // WebSocket через HTTPS
+  viteFinal: async (config): Promise<InlineConfig> => {
+    return {
+      ...config,
+      base: '/ui/',
+      server: {
+        ...config.server,
+        host: '0.0.0.0',
+        strictPort: false,
+        hmr: {
+          clientPort: 443,
+        },
+        origin: 'https://nemec.app',
       },
-      origin: 'https://nemec.app/ui', // явно указываем внешний хост
     };
-    return viteConfig;
-  }
+  },
 };
 
 export default config;
