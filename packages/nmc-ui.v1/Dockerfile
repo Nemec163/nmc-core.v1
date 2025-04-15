@@ -1,5 +1,4 @@
-# Используем node только для сборки
-FROM node:20-alpine AS builder
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -7,21 +6,10 @@ COPY . .
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-RUN rm -rf dist-storybook \
-  && pnpm install --frozen-lockfile \
-  && pnpm build-storybook
+RUN rm -rf dist-storybook && pnpm install && pnpm build-storybook
 
-# Используем nginx для быстрой раздачи статики
-FROM nginx:stable-alpine
+RUN pnpm add -g serve
 
-COPY --from=builder /app/dist-storybook /usr/share/nginx/html
+EXPOSE 6006
 
-# Убираем лишние дефолтные конфиги
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Наш минималистичный конфиг
-COPY nginx.conf /etc/nginx/conf.d/storybook.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["serve", "-s", "dist-storybook", "-l", "6006"]
