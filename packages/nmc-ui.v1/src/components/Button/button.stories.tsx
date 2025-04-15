@@ -1,5 +1,4 @@
-import React from 'react';
-import { Button } from '@nmc/ui';
+import { Button } from '../../index';
 
 export default {
   title: 'Components/Button',
