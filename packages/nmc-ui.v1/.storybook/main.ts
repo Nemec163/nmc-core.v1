@@ -33,7 +33,7 @@ const config: StorybookConfig = {
       hmr: {
         clientPort: 443, // WebSocket через HTTPS
       },
-      origin: 'https://nemec.app', // явно указываем внешний хост
+      origin: 'https://nemec.app/ui', // явно указываем внешний хост
     };
     return viteConfig;
   }
