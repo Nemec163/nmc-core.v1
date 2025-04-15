@@ -12,9 +12,9 @@ function getAbsolutePath(value: string): string {
 
 const config: StorybookConfig = {
   stories: [
-    './src/**/*.mdx',
-    './src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-  ],  
+    '../src/**/*.mdx',
+    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+  ],
   addons: [
     getAbsolutePath('@storybook/addon-essentials'),
     getAbsolutePath('@storybook/addon-onboarding'),
@@ -24,22 +24,23 @@ const config: StorybookConfig = {
     name: getAbsolutePath('@storybook/react-vite'),
     options: {},
   },
-  viteFinal: async (config): Promise<InlineConfig> => {
-    return {
-      ...config,
-      base: '/ui/',
-      server: {
-        ...config.server,
-        host: '0.0.0.0',
-        strictPort: false,
-        hmr: {
-          clientPort: 443, // если HTTPS
-        },
-        origin: 'https://nemec.app',
-        allowedHosts: ['nemec.app'], // ← вот это обязательно
+viteFinal: async (config): Promise<InlineConfig> => {
+  return {
+    ...config,
+    base: '/ui/',
+    server: {
+      ...config.server,
+      host: '0.0.0.0',
+      strictPort: false,
+      hmr: {
+        clientPort: 443, // если HTTPS
       },
-    };
-  }  
+      origin: 'https://nemec.app',
+      allowedHosts: ['nemec.app'], // ← вот это обязательно
+    },
+  };
+},
+
 };
 
 export default config;
