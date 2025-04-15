@@ -33,12 +33,13 @@ const config: StorybookConfig = {
         host: '0.0.0.0',
         strictPort: false,
         hmr: {
-          clientPort: 443,
+          clientPort: 443, // если HTTPS
         },
         origin: 'https://nemec.app',
+        allowedHosts: ['nemec.app'], // ← вот это обязательно
       },
     };
-  },
+  }  
 };
 
 export default config;
