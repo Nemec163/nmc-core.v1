@@ -2,13 +2,17 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY . .
+COPY ../../ ./
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-RUN rm -rf dist-storybook && pnpm install && pnpm build-storybook
+RUN rm -rf packages/nmc-ui.v1/dist-storybook \
+  && pnpm install \
+  && cd packages/nmc-ui.v1 && pnpm build-storybook --output-dir dist-storybook
 
 RUN pnpm add -g serve
+
+WORKDIR /app/packages/nmc-ui.v1
 
 EXPOSE 6006
 
