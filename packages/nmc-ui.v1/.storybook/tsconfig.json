@@ -1,8 +1,7 @@
-// packages/nmc-ui.v1/.storybook/tsconfig.json
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "types": ["node"]
-  },
-  "include": ["main.ts", "preview.ts"]
+    "types": ["node"],
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  }
 }

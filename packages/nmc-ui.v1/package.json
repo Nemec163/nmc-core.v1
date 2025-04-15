@@ -7,8 +7,8 @@
     "build": "tsc",
     "dev": "echo 'UI Kit dev mode (storybook/preview) coming soon'",
     "clean": "rm -rf dist",
-    "storybook": "storybook dev -p 6006 --host 0.0.0.0 --no-open",
-    "build-storybook": "storybook build --output-dir dist-storybook"
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
@@ -17,12 +17,14 @@
     "@babel/preset-typescript": "^7.27.0",
     "@chromatic-com/storybook": "^3",
     "@storybook/addon-essentials": "^8.6.12",
+    "@storybook/addon-interactions": "^8.6.12",
     "@storybook/addon-onboarding": "^8.6.12",
+    "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
     "@storybook/blocks": "^8.6.12",
-    "@storybook/builder-webpack5": "^8.6.12",
     "@storybook/react": "^8.6.12",
     "@storybook/react-webpack5": "^8.6.12",
     "@storybook/test": "^8.6.12",
+    "@types/node": "^22.14.1",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "babel-loader": "^10.0.0",
