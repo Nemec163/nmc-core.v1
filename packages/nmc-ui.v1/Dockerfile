@@ -1,16 +1,8 @@
 FROM node:20-alpine
-
-WORKDIR /repo
-
+WORKDIR /app
 COPY . .
-
 RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN pnpm install --frozen-lockfile
-
-WORKDIR /repo/packages/nmc-ui.v1
-
-RUN pnpm build-storybook
-RUN pnpm add -g serve
+RUN pnpm install --no-frozen-lockfile
 
 EXPOSE 6006
-CMD ["serve", "-s", "dist-storybook", "-l", "6006"]
+CMD ["pnpm", "storybook"]

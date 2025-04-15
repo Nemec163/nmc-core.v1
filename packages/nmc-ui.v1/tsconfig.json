@@ -4,7 +4,9 @@
     "outDir": "dist",
     "declaration": true,
     "declarationDir": "dist",
-    "emitDeclarationOnly": false
+    "emitDeclarationOnly": false,
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom"]
   },
   "include": ["src", "global.d.ts"]
 }
