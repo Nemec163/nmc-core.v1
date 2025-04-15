@@ -7,10 +7,7 @@ function getAbsolutePath(value: string): string {
 }
 
 const config: StorybookConfig = {
-  stories: [
-    '../src/**/*.mdx',
-    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-  ],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     getAbsolutePath('@storybook/addon-essentials'),
     getAbsolutePath('@storybook/addon-onboarding'),
@@ -27,12 +24,16 @@ const config: StorybookConfig = {
       server: {
         ...config.server,
         host: '0.0.0.0',
+        port: 6006,
         strictPort: false,
+        origin: 'https://nemec.app',
         hmr: {
           clientPort: 443,
         },
-        origin: 'https://nemec.app',
         allowedHosts: ['nemec.app'],
+        fs: {
+          allow: ['.'], // <- это важно для Docker, иначе Vite не увидит файлы
+        },
       },
     };
   },
