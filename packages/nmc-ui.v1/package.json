@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "echo 'UI Kit dev mode (storybook/preview) coming soon'",
     "clean": "rm -rf dist",
-    "storybook": "storybook dev -p 6006 --host 0.0.0.0",
+    "storybook": "storybook dev -p 6006 --host 0.0.0.0 --no-open",
     "build-storybook": "storybook build"
   },
   "dependencies": {
