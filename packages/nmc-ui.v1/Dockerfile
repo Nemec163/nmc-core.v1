@@ -1,19 +1,28 @@
-FROM node:20-alpine
+
+# Используем node только для сборки
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY ../../ ./
+COPY . .
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-RUN rm -rf packages/nmc-ui.v1/dist-storybook \
-  && pnpm install \
-  && cd packages/nmc-ui.v1 && pnpm build-storybook --output-dir dist-storybook
+RUN rm -rf dist-storybook \
+  && pnpm install --frozen-lockfile \
+  && pnpm build-storybook
 
-RUN pnpm add -g serve
+# Используем nginx для быстрой раздачи статики
+FROM nginx:stable-alpine
 
-WORKDIR /app/packages/nmc-ui.v1
+COPY --from=builder /app/dist-storybook /usr/share/nginx/html
 
-EXPOSE 6006
+# Убираем лишние дефолтные конфиги
+RUN rm /etc/nginx/conf.d/default.conf
 
-CMD ["serve", "-s", "dist-storybook", "-l", "6006"]
+# Наш минималистичный конфиг
+COPY nginx.conf /etc/nginx/conf.d/storybook.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
