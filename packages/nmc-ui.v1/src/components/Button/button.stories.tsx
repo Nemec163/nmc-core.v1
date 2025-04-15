@@ -5,7 +5,6 @@ export default {
   component: Button,
 };
 
-
 export const Default = () => (
   <Button onClick={() => alert('Clicked!')}>Click Me</Button>
 );
