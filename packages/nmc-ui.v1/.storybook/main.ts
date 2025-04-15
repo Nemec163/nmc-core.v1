@@ -1,20 +1,30 @@
-import type { StorybookConfig } from '@storybook/react-vite';
-import { join, dirname } from 'path';
-
-function getAbsolutePath(value: string): string {
-  return dirname(require.resolve(join(value, 'package.json')));
-}
+import type { StorybookConfig } from '@storybook/react-webpack5';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: [
-    getAbsolutePath('@storybook/addon-essentials'),
-    getAbsolutePath('@storybook/addon-onboarding'),
-    getAbsolutePath('@chromatic-com/storybook'),
-  ],
+  addons: ['@storybook/addon-essentials'],
   framework: {
-    name: getAbsolutePath('@storybook/react-vite'),
+    name: '@storybook/react-webpack5',
     options: {},
+  },
+  webpackFinal: async (config) => {
+    config.module?.rules?.push({
+      test: /\.(ts|tsx)$/,
+      use: [
+        {
+          loader: require.resolve('babel-loader'),
+          options: {
+            presets: [
+              require.resolve('@babel/preset-env'),
+              require.resolve('@babel/preset-react'),
+              require.resolve('@babel/preset-typescript'),
+            ],
+          },
+        },
+      ],
+    });
+    config.resolve!.extensions!.push('.ts', '.tsx');
+    return config;
   },
 };
 
