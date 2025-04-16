@@ -2,12 +2,11 @@ import styles from './button.module.scss';
 
 import React, { ReactNode } from 'react';
 
-export interface ButtonProps{
+interface ButtonProps{
   children?: any;
   onClick?: (e: any) => void;
   prefix?: ReactNode;
   suffix?: ReactNode;
-  template?: string;
   size?: string;
   href?: string;
   target?: string;
@@ -25,7 +24,6 @@ const Button = ({
   onClick, 
   prefix, 
   suffix,
-  template = 'red',
   size = 'md',
   href, 
   target, 
@@ -45,7 +43,11 @@ const Button = ({
     onClick: disabled || loading ? undefined : onClick,
     onMouseDown: handleMouseDown,
     onMouseUp: handleMouseUp,
-    className: `${styles.component} ${template ? styles[template] : ''} ${size ? styles[size] : ''} ${isActive ? styles.active : ''} ${disabled ? styles.disabled : ''} ${className ? className : ''}`,
+    className: `${styles.component || 'button'} 
+                ${size ? (styles[size] || size) : ''} 
+                ${isActive ? (styles.active || 'active') : ''} 
+                ${disabled ? (styles.disabled || 'disabled') : ''} 
+                ${className || ''}`,
     href: disabled || loading ? undefined : href,
     form
   }
@@ -53,7 +55,7 @@ const Button = ({
   const content = (
     <>
       {prefix && <div className={styles.prefix}>{prefix}</div>}
-      {/* {loading ? <Loader color='var(--text-primary)' size='1.8056rem' /> : children} */}
+      {loading ? <div className={styles.loader}>Loading...</div> : children}
       {suffix && <div className={styles.suffix}>{suffix}</div>}
     </>
   );

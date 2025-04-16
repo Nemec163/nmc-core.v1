@@ -1,13 +1,14 @@
-import type { Preview } from '@storybook/react'
-
-const preview: Preview = {
+/** @type { import('@storybook/react').Preview } */
+const preview = {
   parameters: {
     controls: {
+      expanded: true,
       matchers: {
        color: /(background|color)$/i,
        date: /Date$/i,
       },
     },
+    actions: { argTypesRegex: '^on[A-Z].*' }
   },
 };
 

@@ -1,0 +1,37 @@
+@keyframes rotation {
+  0% {
+    transform:rotate(0deg);
+  }
+  100% {
+    transform:rotate(360deg);
+  }
+}
+
+@keyframes breatheAnimation {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes glow-animation {
+  0%, 100% {
+    text-shadow: toRem(0px) toRem(0px) toRem(5px) var(--text-glow), toRem(0px) toRem(0px) toRem(15px) var(--text-glow);
+    filter: drop-shadow(toRem(0px) toRem(0px) toRem(5px) var(--text-glow));
+  }
+  25%, 75% {
+    text-shadow: toRem(0px) toRem(0px) toRem(8px) var(--text-glow-bright), toRem(0px) toRem(0px) toRem(25px) var(--text-glow-bright);
+    filter: drop-shadow(toRem(0px) toRem(0px) toRem(8px) var(--text-glow-bright));
+  }
+  50% {
+    text-shadow: toRem(0px) toRem(0px) toRem(10px) var(--text-glow-brightest), toRem(0px) toRem(0px) toRem(30px) var(--text-glow-brightest);
+    filter: drop-shadow(toRem(0px) toRem(0px) toRem(10px) var(--text-glow-brightest));
+  }
+}

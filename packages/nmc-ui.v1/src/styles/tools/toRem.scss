@@ -1,0 +1,20 @@
+@use 'sass:math';
+
+@function toRem($_PixelsInSketch) {
+  // Проверка наличия единицы измерения и что это не 'rem'
+  @if unit($_PixelsInSketch) == 'rem' {
+    @return $_PixelsInSketch;
+  }
+
+  // Проверяем, что значение является числом и имеет единицу измерения 'px'
+  @if type-of($_PixelsInSketch) == 'number' and unit($_PixelsInSketch) == 'px' {
+    // Вычисляем результат деления, поддерживая отрицательные значения
+    $pixels: math.div($_PixelsInSketch, 1px); // Преобразуем в чистое число
+    $remValue: $pixels / 14.4; // Переводим пиксели в rem
+    @return #{$remValue}rem; // Возвращаем значение с единицей измерения
+  }
+
+  // Если переданное значение не в пикселях
+  @warn "Expected a pixel value, but got #{$_PixelsInSketch}.";
+  @return null;
+}

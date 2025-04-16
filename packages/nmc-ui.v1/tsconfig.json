@@ -4,9 +4,15 @@
     "outDir": "dist",
     "declaration": true,
     "declarationDir": "dist",
-    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "jsx": "react-jsx",
-    "types": ["react", "react-dom"]
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "target": "ESNext",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src", "global.d.ts"]
 }

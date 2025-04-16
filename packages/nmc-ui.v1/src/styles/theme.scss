@@ -1,0 +1,89 @@
+// Core design tokens - these are shared across all themes
+:root {
+  // Spacing system
+  --spacing-small: #{toRem(8px)};
+  --spacing-medium: #{toRem(16px)};
+  --spacing-large: #{toRem(24px)};
+  
+  // Border radius
+  --border-radius-small: #{toRem(4px)};
+  --border-radius-medium: #{toRem(8px)};
+  --border-radius-large: #{toRem(12px)};
+  --border-radius-full: 100%;
+
+  // Typography
+  --font-size-small: #{toRem(12px)};
+  --font-size-medium: #{toRem(16px)};
+  --font-size-large: #{toRem(20px)};
+  --line-height-small: #{toRem(18px)};
+  --line-height-medium: #{toRem(24px)};
+  --line-height-large: #{toRem(30px)};
+
+  // Layout
+  --backdrop-blur: #{toRem(12px)}; 
+  --adaptiveHeight: #{calc(100vh - toRem(256px))};
+}
+
+// Theme definitions
+.nmc-theme-dark {
+  // Colors
+  --border-color: #2a2a2a;
+  --text-primary: #a6a6a6;
+  --text-secondary: #808080;
+
+  // Effects
+  --text-glow: #00FF00;
+  --text-glow-bright: #00FF88;
+  --text-glow-brightest: #00FFAA;
+  --shadow-glow: #{toRem(0px)} #{toRem(0px)} #{toRem(3px)} var(--text-glow), #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} var(--text-glow);
+
+  // Backgrounds
+  --background: #33333d; /* Flat surfaces background */
+  --background-in: linear-gradient(145deg, #2b2b35, #3a3a45); /* Inner surfaces background */
+  --background-out: linear-gradient(145deg, #414151, #252534); /* Outer surfaces background */
+
+  // Shadows
+  --shadow: #{toRem(6px)} #{toRem(6px)} #{toRem(12px)} #1e1e28, #{toRem(-6px)} #{toRem(-6px)} #{toRem(12px)} #484858;
+  --shadow-in: inset #{toRem(6px)} #{toRem(6px)} #{toRem(12px)} #1e1e28, inset #{toRem(-6px)} #{toRem(-6px)} #{toRem(12px)} #484858;
+}
+
+.nmc-theme-light {
+  // Colors
+  --border-color: #d1d1d6;
+  --text-primary: #505050;
+  --text-secondary: #696969;
+  
+  // Effects
+  --text-glow: #FF4500;
+  --text-glow-bright: #FF6633;
+  --text-glow-brightest: #FF8866;
+  --shadow-glow: #{toRem(0px)} #{toRem(0px)} #{toRem(3px)} var(--text-glow), #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} var(--text-glow);
+
+  // Backgrounds
+  --background: #e0e0e0; /* Flat surfaces background */
+  --background-in: linear-gradient(145deg, #cacaca, #f0f0f0); /* Inner surfaces background */
+  --background-out: linear-gradient(145deg, #f0f0f0, #cacaca); /* Outer surfaces background */
+
+  // Shadows
+  --shadow: #{toRem(5px)} #{toRem(5px)} #{toRem(10px)} #bebebe, #{toRem(-5px)} #{toRem(-5px)} #{toRem(10px)} #ffffff;
+  --shadow-in: inset #{toRem(5px)} #{toRem(5px)} #{toRem(10px)} #bebebe, inset #{toRem(-5px)} #{toRem(-5px)} #{toRem(10px)} #ffffff;
+}
+
+// Backward compatibility for existing code
+.dark { @extend .nmc-theme-dark; }
+.light { @extend .nmc-theme-light; }
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  :root {
+    --spacing-small: #{toRem(4px)};
+    --spacing-medium: #{toRem(8px)};
+    --spacing-large: #{toRem(16px)};
+    
+    --border-radius-small: #{toRem(2px)};
+    --border-radius-medium: #{toRem(4px)};
+    --border-radius-large: #{toRem(8px)};
+
+    --adaptiveHeight: #{calc(100vh - toRem(220px))};
+  }
+}
