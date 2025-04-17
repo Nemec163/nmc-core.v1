@@ -1,28 +1,20 @@
 @use './tools/toRem' as *;
 
-// ========================================
-// Animation Keyframes
-// ========================================
-
-/// Rotation animation - full 360-degree rotation
 @keyframes rotation {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/// Breathing effect - scales element up and down
 @keyframes breatheAnimation {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.5); }
 }
 
-/// Blinking effect - fades element in and out
 @keyframes blink {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 }
 
-/// Text glow animation - changes only text shadow
 @keyframes text-glow-animation {
   0%, 100% {
     text-shadow: 
@@ -43,7 +35,6 @@
   }
 }
 
-/// Element glow animation - changes only filter effects
 @keyframes element-glow-animation {
   0%, 100% {
     filter: drop-shadow(#{toRem(0px)} #{toRem(0px)} #{toRem(5px)} var(--animation-glow-base));
@@ -58,60 +49,29 @@
   }
 }
 
-// ========================================
-// Animation Variables
-// Applied to the root component to be accessible globally
-// ========================================
-
 .nmc-ui {
-  // Glow animation variables - fallbacks for components that don't provide their own
   --animation-glow-base: var(--text-glow, transparent);
   --animation-glow-mid: var(--text-glow-bright, transparent);
   --animation-glow-bright: var(--text-glow-brightest, transparent);
 }
 
-// ========================================
-// Animation Mixins
-// ========================================
 
-/// Apply rotation animation
-/// @param {String} $duration [1s] - Animation duration
-/// @param {String} $timing-function [linear] - Animation timing function 
 @mixin rotate($duration: 1s, $timing-function: linear) {
   animation: rotation $duration $timing-function infinite;
 }
 
-/// Apply breathing animation
-/// @param {String} $duration [3s] - Animation duration
-/// @param {String} $timing-function [ease-in-out] - Animation timing function
 @mixin breathe($duration: 3s, $timing-function: ease-in-out) {
   animation: breatheAnimation $duration $timing-function infinite;
 }
 
-/// Apply blinking animation
-/// @param {String} $duration [1s] - Animation duration
 @mixin blink($duration: 1s) {
   animation: blink $duration infinite;
 }
 
-/// Apply text glow animation
-/// @param {String} $duration [3s] - Animation duration
-/// @param {String} $timing-function [ease-in-out] - Animation timing function
 @mixin glow-text($duration: 3s, $timing-function: ease-in-out) {
   animation: text-glow-animation $duration $timing-function infinite;
 }
 
-/// Apply element glow animation
-/// @param {String} $duration [3s] - Animation duration
-/// @param {String} $timing-function [ease-in-out] - Animation timing function
 @mixin glow-element($duration: 3s, $timing-function: ease-in-out) {
   animation: element-glow-animation $duration $timing-function infinite;
-}
-
-/// Legacy glow mixin for backward compatibility
-/// @param {String} $duration [3s] - Animation duration
-/// @param {String} $timing-function [ease-in-out] - Animation timing function
-@mixin glow($duration: 3s, $timing-function: ease-in-out) {
-  @warn "The glow() mixin is deprecated. Use glow-text() or glow-element() instead.";
-  @include glow-text($duration, $timing-function);
 }

@@ -1,13 +1,4 @@
-// Core configuration variables
-// These control the base sizing and rem calculations across the UI kit
-
-// Controls whether to use rem units (true) or px units (false)
 $useRem: true !default;
-
-// Base font size for rem calculations - this is the reference point
-// for all toRem() conversions
 $baseFontSize: 14.4 !default;
-
-// Breakpoints
 $breakpoint-mobile: 768px !default;
 $breakpoint-desktop: 1440px !default;

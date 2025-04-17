@@ -1,48 +1,30 @@
 @use '../tools/toRem.scss' as *;
 @use '../animations' as *;
 
-// ========================================
-// Neumorphic Style Mixins
-// ========================================
-
-/// Applies a flat neumorphic style
-/// Creates a raised surface with subtle shadows
 @mixin neumorphic-flat {
   background: var(--background);
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
 }
 
-/// Applies a mixed in-out neumorphic style
-/// Creates a surface that appears both raised and pressed
 @mixin neumorphic-in-out {
   background: var(--background-in);
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
 }
 
-/// Applies a raised neumorphic style
-/// Creates a surface that appears elevated from its surroundings
 @mixin neumorphic-out {
   background: var(--background-out);
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
 }
 
-/// Applies an inset neumorphic style
-/// Creates a surface that appears pressed into its surroundings
 @mixin neumorphic-in {
   background: var(--background);
   box-shadow: var(--shadow-in);
   border: 1px solid var(--border-color);
 }
 
-// ========================================
-// Glow Effect Mixins
-// ========================================
-
-/// Applies a text glow effect
-/// @param {Boolean} $animate [true] - Whether to animate the glow effect
 @mixin text-glow($animate: true) {
   text-shadow: var(--shadow-glow);
   color: var(--text-glow);
@@ -56,9 +38,6 @@
   }
 }
 
-/// Applies a glow effect to elements via filter
-/// @param {Boolean} $animate [true] - Whether to animate the glow effect
-/// @param {Number} $intensity [3px] - Intensity of the glow effect
 @mixin element-glow($animate: true, $intensity: 3px) {
   filter: drop-shadow(toRem(0) toRem(0) toRem($intensity) var(--text-glow));
   
