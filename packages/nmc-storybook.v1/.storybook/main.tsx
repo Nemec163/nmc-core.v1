@@ -1,8 +1,8 @@
+import { StorybookConfig } from '@storybook/react-vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 
-/** @type { import('@storybook/react-vite').StorybookConfig } */
-const config = {
+const config: StorybookConfig = {
   stories: ['../stories/**/*.stories.@(ts|tsx|js|jsx|mdx)'],
   addons: [
     '@storybook/addon-essentials',
@@ -13,16 +13,17 @@ const config = {
     name: '@storybook/react-vite',
     options: {}
   },
-  viteFinal: async (config) => {
+  viteFinal: async (config, { configType }) => {
     config.plugins = config.plugins || [];
     config.plugins.push(tsconfigPaths());
+
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
       '@nmc/ui': path.resolve(__dirname, '../../../packages/nmc-ui.v1/src'),
       '@nmc-ui.v1/src': path.resolve(__dirname, '../../../packages/nmc-ui.v1/src')
     };
-    
+
     return config;
   }
 };

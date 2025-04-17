@@ -25,15 +25,18 @@
   border: 1px solid var(--border-color);
 }
 
+@mixin setup-glow-variables {
+  --animation-glow-base: var(--text-glow);
+  --animation-glow-mid: var(--text-glow-bright);
+  --animation-glow-bright: var(--text-glow-brightest);
+}
+
 @mixin text-glow($animate: true) {
   text-shadow: var(--shadow-glow);
   color: var(--text-glow);
   
   @if $animate {
-    --animation-glow-base: var(--text-glow);
-    --animation-glow-mid: var(--text-glow-bright);
-    --animation-glow-bright: var(--text-glow-brightest);
-    
+    @include setup-glow-variables;
     @include glow-text();
   }
 }
@@ -42,10 +45,7 @@
   filter: drop-shadow(toRem(0) toRem(0) toRem($intensity) var(--text-glow));
   
   @if $animate {
-    --animation-glow-base: var(--text-glow);
-    --animation-glow-mid: var(--text-glow-bright);
-    --animation-glow-bright: var(--text-glow-brightest);
-    
+    @include setup-glow-variables;
     @include glow-element();
   }
 }

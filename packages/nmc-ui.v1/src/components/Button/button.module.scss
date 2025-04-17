@@ -6,11 +6,11 @@
   justify-content: center;
   user-select: none;
   white-space: nowrap;
-  background: var(--background-out);
+  background: var(--background);
   color: var(--text-primary);
 
-  &.glow{
-    @include text-glow;
+  &.active {
+    color: var(--text-secondary);
   }
   
   .prefix {
@@ -33,10 +33,9 @@
     pointer-events: none;
   }
 
-  // SIZES
   &.sm {
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-sm);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-md);
     padding: calc(var(--spacing-sm) / 2) var(--spacing-sm);
     border-radius: var(--border-radius-sm);
   }
@@ -49,7 +48,7 @@
   }
 
   &.lg {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-md);
     line-height: var(--line-height-lg);
     padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--border-radius-lg);
@@ -60,9 +59,15 @@
 :global(.neumorphic-dark) {
   .component{
     @include neumorphic-out;
+
+    &:hover {
+      @include neumorphic-in-out;
+      opacity: 1;
+    }
     
     &.active {
       @include neumorphic-in;
+      @include text-glow(false);
     }
   }
 }

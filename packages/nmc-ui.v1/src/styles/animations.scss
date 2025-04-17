@@ -17,21 +17,33 @@
 
 @keyframes text-glow-animation {
   0%, 100% {
-    text-shadow: 
-      #{toRem(0px)} #{toRem(0px)} #{toRem(5px)} var(--animation-glow-base),
-      #{toRem(0px)} #{toRem(0px)} #{toRem(15px)} var(--animation-glow-base);
+    opacity: 1;
+    text-shadow:
+      #{toRem(0)} #{toRem(0)} #{toRem(4px)} var(--animation-glow-base),
+      #{toRem(0)} #{toRem(0)} #{toRem(12px)} var(--animation-glow-base);
+    filter: drop-shadow(0 0 #{toRem(2px)} var(--animation-glow-base));
+    animation-timing-function: ease-in-out;
   }
-  
-  25%, 75% {
-    text-shadow: 
-      #{toRem(0px)} #{toRem(0px)} #{toRem(8px)} var(--animation-glow-mid),
-      #{toRem(0px)} #{toRem(0px)} #{toRem(25px)} var(--animation-glow-mid);
+  25% {
+    opacity: 0.9;
+    text-shadow:
+      #{toRem(0)} #{toRem(0)} #{toRem(6px)} var(--animation-glow-mid),
+      #{toRem(0)} #{toRem(0)} #{toRem(18px)} var(--animation-glow-mid);
+    filter: drop-shadow(0 0 #{toRem(4px)} var(--animation-glow-mid));
   }
-  
   50% {
-    text-shadow: 
-      #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} var(--animation-glow-bright),
-      #{toRem(0px)} #{toRem(0px)} #{toRem(30px)} var(--animation-glow-bright);
+    opacity: 1;
+    text-shadow:
+      #{toRem(0)} #{toRem(0)} #{toRem(8px)} var(--animation-glow-bright),
+      #{toRem(0)} #{toRem(0)} #{toRem(20px)} var(--animation-glow-bright);
+    filter: drop-shadow(0 0 #{toRem(6px)} var(--animation-glow-bright));
+  }
+  75% {
+    opacity: 0.9;
+    text-shadow:
+      #{toRem(0)} #{toRem(0)} #{toRem(6px)} var(--animation-glow-mid),
+      #{toRem(0)} #{toRem(0)} #{toRem(18px)} var(--animation-glow-mid);
+    filter: drop-shadow(0 0 #{toRem(4px)} var(--animation-glow-mid));
   }
 }
 
@@ -39,22 +51,12 @@
   0%, 100% {
     filter: drop-shadow(#{toRem(0px)} #{toRem(0px)} #{toRem(5px)} var(--animation-glow-base));
   }
-  
-  25%, 75% {
-    filter: drop-shadow(#{toRem(0px)} #{toRem(0px)} #{toRem(8px)} var(--animation-glow-mid));
-  }
-  
-  50% {
-    filter: drop-shadow(#{toRem(0px)} #{toRem(0px)} #{toRem(10px)} var(--animation-glow-bright));
-  }
+  10% { filter: drop-shadow(#{toRem(-2px)} #{toRem(-2px)} #{toRem(8px)} var(--animation-glow-mid)); }
+  30% { filter: drop-shadow(#{toRem(2px)} #{toRem(2px)} #{toRem(6px)} var(--animation-glow-mid)); }
+  50% { filter: drop-shadow(#{toRem(0px)} #{toRem(0px)} #{toRem(10px)} var(--animation-glow-bright)); }
+  70% { filter: drop-shadow(#{toRem(1px)} #{toRem(1px)} #{toRem(7px)} var(--animation-glow-base)); }
+  90% { filter: drop-shadow(#{toRem(-1px)} #{toRem(1px)} #{toRem(9px)} var(--animation-glow-mid)); }
 }
-
-.nmc-ui {
-  --animation-glow-base: var(--text-glow, transparent);
-  --animation-glow-mid: var(--text-glow-bright, transparent);
-  --animation-glow-bright: var(--text-glow-brightest, transparent);
-}
-
 
 @mixin rotate($duration: 1s, $timing-function: linear) {
   animation: rotation $duration $timing-function infinite;

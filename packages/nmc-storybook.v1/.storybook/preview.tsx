@@ -1,6 +1,3 @@
-import '@nmc/ui/styles/index.scss';
-
-import React from 'react';
 export const globalTypes = {
   theme: {
     name: 'Theme',
@@ -24,15 +21,7 @@ const preview = {
   parameters: {
     layout: 'fullscreen'
   },
-  decorators: [
-    (Story, context) => {
-      const theme = context.globals.theme;
-      document.body.classList.remove('flat-light', 'flat-dark', 'neumorphic-light', 'neumorphic-dark');
-      document.body.classList.add(theme);
-
-      return <div className={`nmc-ui ${theme}`}><Story /></div>;
-    }
-  ]
+  decorators: []
 };
 
 export default preview;

@@ -1,0 +1,315 @@
+@use '../../nmc-ui.v1/src/styles/tools/toRem.scss' as *;
+@use '../../nmc-ui.v1/src/styles/animations' as animations;
+@use '../../nmc-ui.v1/src/styles/mixins/neumorphic' as neumorphic;
+
+.page {
+  min-height: 100svh;
+  height: 100%;
+  padding: var(--spacing-xl);
+  background-color: var(--background);
+
+  &:global(.flat-dark),
+  &:global(.flat-light) {
+    background-color: var(--text-primary);
+
+    .docs{
+      h2{
+        color: var(--background);
+      }
+    }
+  }
+
+  &:global(.neumorphic-dark),
+  &:global(.neumorphic-light) {
+    .docs{
+      .category{
+        @include neumorphic.neumorphic-flat;
+
+        h3{
+          @include neumorphic.text-glow;
+        }
+      }
+    }
+  }
+
+  .docs {
+    margin: var(--spacing-md) 0 0 0;
+    border-radius: var(--border-radius-md);
+    background-color: var(--background-in);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    
+    h2 {
+      font-size: var(--heading-lg);
+      color: var(--text-primary);
+    }
+    
+    .category {
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius-md);
+      background-color: var(--background);
+      
+      h3 {
+        font-size: var(--heading-sm);
+        color: var(--text-primary);
+        padding-bottom: var(--spacing-sm);
+      }
+      
+      .variables {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: var(--spacing-md);
+        border-top: 1px solid var(--border-color);
+        padding: var(--spacing-md) 0 0;
+      }
+  
+      .typographyGrid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+      
+      .animationsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+      
+      .variable {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        
+        code {
+          font-size: var(--font-size-xs);
+          padding: var(--spacing-xs) var(--spacing-sm);
+          background-color: var(--background);
+          border-radius: var(--border-radius-sm);
+          color: var(--text-secondary);
+          margin-top: var(--spacing-md);
+          box-shadow: var(--shadow-in);
+          white-space: nowrap;
+          width: 100%;
+  
+          :global(.flat-dark) &, :global(.flat-light) & {
+            border: 1px solid var(--border-color);
+          }
+        }
+      }
+    }
+    
+    .square {
+      background-color: var(--text-primary);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .sizeXS { 
+      width: var(--spacing-xs);
+      height: var(--spacing-xs);
+    }
+    .sizeSM { 
+      width: var(--spacing-sm);
+      height: var(--spacing-sm);
+    }
+    .sizeMD { 
+      width: var(--spacing-md);
+      height: var(--spacing-md);
+    }
+    .sizeLG { 
+      width: var(--spacing-lg);
+      height: var(--spacing-lg);
+    }
+    .sizeXL { 
+      width: var(--spacing-xl);
+      height: var(--spacing-xl);
+    }
+    
+    .radius {
+      width: var(--spacing-lg);
+      height: var(--spacing-lg);
+      background-color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+      
+      &.radiusSM { border-radius: var(--border-radius-sm); }
+      &.radiusMD { border-radius: var(--border-radius-md); }
+      &.radiusLG { border-radius: var(--border-radius-lg); }
+      &.radiusXL { border-radius: var(--border-radius-xl); }
+    }
+    
+    .color {
+      width: var(--spacing-lg);
+      height: var(--spacing-lg);
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      margin-bottom: var(--spacing-sm);
+      
+      &.background { background-color: var(--background); }
+      &.backgroundIn { 
+        background-image: var(--background-in);
+        background-size: 100% 100%;
+      }
+      &.backgroundOut { 
+        background-image: var(--background-out);
+        background-size: 100% 100%;
+      }
+      &.borderColor { background-color: var(--border-color); }
+      &.textPrimary { background-color: var(--text-primary); }
+      &.textSecondary { background-color: var(--text-secondary); }
+      &.textAccent { background-color: var(--text-accent); }
+      &.textGlow { background-color: var(--text-glow); }
+      &.textGlowBright { background-color: var(--text-glow-bright); }
+      &.textGlowBrightest { background-color: var(--text-glow-brightest); }
+    }
+    
+    // Shadow & effects examples
+    .shadowExample {
+      width: var(--spacing-xl);
+      height: var(--spacing-xl);
+      border-radius: var(--border-radius-md);
+      margin-bottom: var(--spacing-sm);
+      position: relative;
+      
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: var(--font-size-xs);
+        color: var(--text-primary);
+      }
+  
+      // Regular shadow example
+      &.shadowNormal { 
+        background-color: var(--background);
+        box-shadow: var(--shadow);
+        
+        &::before {
+          content: 'Out';
+        }
+      }
+      
+      &.shadowIn { 
+        background-color: var(--background);
+        box-shadow: var(--shadow-in);
+        
+        &::before {
+          content: 'In';
+        }
+      }
+      
+      &.shadowGlow { 
+        background-color: var(--background);
+        box-shadow: var(--shadow-glow);
+        
+        &::before {
+          content: 'Glow';
+        }
+      }
+      
+      :global(.flat-dark) &, :global(.flat-light) & {
+        background-color: var(--background);
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+      }
+    }
+    
+    .font {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      text-align: center;
+      margin-bottom: var(--spacing-sm);
+      
+      &.fontSizeXs { font-size: var(--font-size-xs); }
+      &.fontSizeSm { font-size: var(--font-size-sm); }
+      &.fontSizeMd { font-size: var(--font-size-md); }
+      &.fontSizeLg { font-size: var(--font-size-lg); }
+      &.headingSm { font-size: var(--heading-sm); }
+      &.headingMd { font-size: var(--heading-md); }
+      &.headingLg { 
+        font-size: clamp(24px, var(--heading-lg), 30px);
+      }
+    }
+    
+    .animation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      width: 100%;
+      position: relative;
+      margin-bottom: var(--spacing-sm);
+      
+      .animationContent {
+        display: inline-block;
+        font-size: var(--font-size-lg);
+        color: var(--text-glow);
+      }
+      
+      .glowElementBox {
+        width: var(--spacing-md);
+        height: var(--spacing-md);
+        border-radius: var(--border-radius-xl);
+      }
+      
+      &.glowTextActive {
+        @include neumorphic.setup-glow-variables;
+  
+        .animationContent {
+          @include animations.glow-text(3s, ease-in-out);
+        }
+      }
+      
+      &.glowElementActive {
+        @include neumorphic.setup-glow-variables;
+  
+        .glowElementBox {
+          @include animations.glow-element(3s, ease-in-out);
+          background: var(--text-glow-bright);
+        }
+      }
+      
+      &.rotateActive {
+        .animationContent {
+          @include animations.rotate(2s, linear);
+        }
+      }
+      
+      &.breatheActive {
+        .animationContent {
+          @include animations.breathe(4s, ease-in-out);
+        }
+      }
+      
+      &.blinkActive {
+        .animationContent {
+          @include animations.blink(1.5s);
+        }
+      }
+    }
+    
+    .lineHeight {
+      width: var(--spacing-xl);
+      background-color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+      position: relative;
+      
+      &.lineHeightSm { height: var(--line-height-sm); }
+      &.lineHeightMd { height: var(--line-height-md); }
+      &.lineHeightLg { height: var(--line-height-lg); }
+      &.lineHeightXl { height: var(--line-height-xl); }
+      
+      .lineHeightValue {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: var(--font-size-xs);
+        color: var(--background);
+        white-space: nowrap;
+      }
+    }
+  }
+}

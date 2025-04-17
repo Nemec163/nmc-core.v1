@@ -1,192 +1,210 @@
-# NMC UI Kit
+# 🌟 NMC UI Component Library v1
 
-Современная библиотека React-компонентов с поддержкой тем для проектов NMC.
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/react-19.1.0-61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License" />
+</p>
 
-## Установка
+> Modern, themeable React component library with advanced styling features. Includes neumorphic design with light/dark variants and flat design alternatives.
 
-В рамках монорепозитория:
+## ✨ Features
+
+- 🎨 Multiple theming options (neumorphic and flat designs)
+- 🌓 Dark and light mode support
+- 📱 Responsive design with mobile adaptations
+- 💅 SCSS modules with advanced styling
+- ✨ Animation and glow effects
+- 🚀 Easy to integrate in any React project
+
+## 📦 Installation & Setup
+
+### 🌐 From NPM Registry
 
 ```bash
-# Использование компонентов из другого пакета монорепозитория
-# package.json вашего проекта
-{
-  "dependencies": {
-    "nmc-ui.v1": "workspace:^"
-  }
-}
-```
-
-При использовании вне монорепозитория (после публикации в npm):
-
-```bash
-# Использование npm
+# Using npm
 npm install nmc-ui.v1
 
-# Использование yarn
+# Using yarn
 yarn add nmc-ui.v1
 
-# Использование pnpm
+# Using pnpm
 pnpm add nmc-ui.v1
 ```
 
-## Использование
-
-### Импорт стилей
-
-Сначала импортируйте основные стили в главном файле вашего приложения:
+After installation, import the styles and start using the components:
 
 ```jsx
-// В вашем _app.jsx или основном файле входа
+// Import styles in your main entry file (e.g., index.js, App.js)
 import 'nmc-ui.v1/dist/styles/index.css';
-```
 
-### Использование компонентов
+// Import and use components in your React components
+import { Button } from 'nmc-ui.v1';
 
-Импортируйте и используйте компоненты в вашем React-приложении:
-
-```jsx
-import { Button, ThemeProvider } from 'nmc-ui.v1';
-
-function App() {
+function MyComponent() {
   return (
-    <ThemeProvider defaultTheme="nmc-theme-dark">
-      <div>
-        <Button template="red" size="md">Нажми меня</Button>
-      </div>
-    </ThemeProvider>
-  );
-}
-```
-
-## Темизация
-
-### Встроенные темы
-
-UI кит поставляется с двумя встроенными темами:
-
-- `nmc-theme-light` - Светлая тема с оранжевыми акцентами
-- `nmc-theme-dark` - Темная тема с зелеными акцентами
-
-### Использование ThemeProvider
-
-Оберните ваше приложение в `ThemeProvider` для активации поддержки тем:
-
-```jsx
-import { ThemeProvider } from 'nmc-ui.v1';
-
-function App() {
-  return (
-    <ThemeProvider defaultTheme="nmc-theme-dark">
-      <YourAppComponents />
-    </ThemeProvider>
-  );
-}
-```
-
-### Переключение тем
-
-```jsx
-import { useTheme, Button } from 'nmc-ui.v1';
-
-function ThemeSwitcher() {
-  const { theme, setTheme } = useTheme();
-  
-  return (
-    <Button onClick={() => setTheme(
-      theme === 'nmc-theme-dark' ? 'nmc-theme-light' : 'nmc-theme-dark'
-    )}>
-      Переключить на {theme === 'nmc-theme-dark' ? 'светлую' : 'темную'} тему
-    </Button>
-  );
-}
-```
-
-Или используйте готовый компонент для переключения тем:
-
-```jsx
-import { ThemeSwitcher } from 'nmc-ui.v1';
-
-function YourApp() {
-  return (
-    <div>
-      <ThemeSwitcher 
-        themes={['nmc-theme-light', 'nmc-theme-dark']}
-        label="Тема:"
-      />
-      {/* Остальное содержимое приложения */}
+    <div className="nmc-ui neumorphic-light">
+      <Button onClick={() => alert('Hello!')}>Click me</Button>
     </div>
   );
 }
 ```
 
-### Пользовательские темы
+### 🔧 Local Development (Monorepo)
 
-Вы можете создать свои собственные темы:
+When using this package locally within the nmc-core.v1 monorepo:
 
-1. Определите переменные вашей темы в CSS/SCSS файле:
+1. **Link the package:**
 
-```scss
-.my-custom-theme {
-  --border-color: #3a3a3a;
-  --text-primary: #ffffff;
-  --text-secondary: #cccccc;
-  --text-glow: #ff00ff;
-  --shadow-glow: 0 0 3px var(--text-glow), 0 0 10px var(--text-glow);
-  --background: #222222;
-  --background-in: linear-gradient(145deg, #1e1e1e, #2a2a2a);
-  --background-out: linear-gradient(145deg, #2a2a2a, #1e1e1e);
-  --shadow: 6px 6px 12px #1a1a1a, -6px -6px 12px #2a2a2a;
-  --shadow-in: inset 6px 6px 12px #1a1a1a, inset -6px -6px 12px #2a2a2a;
+```bash
+# From the root of the monorepo
+pnpm install
+
+# Build the UI package
+cd packages/nmc-ui.v1
+pnpm run build
+```
+
+2. **Configure in consuming project:**
+
+For Next.js applications (like nmc-site.v1):
+
+```ts
+// In next.config.ts
+import path from "path";
+
+const nextConfig = {
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@nmc/ui": path.resolve(__dirname, "../../packages/nmc-ui.v1/src"),
+    };
+    return config;
+  },
+};
+
+export default nextConfig;
+```
+
+For Vite/Storybook (like nmc-storybook.v1):
+
+```js
+// In vite.config.js
+import path from 'path';
+
+export default {
+  resolve: {
+    alias: {
+      '@nmc/ui': path.resolve(__dirname, '../../packages/nmc-ui.v1/src')
+    }
+  }
 }
 ```
 
-2. Зарегистрируйте вашу пользовательскую тему в ThemeProvider:
+3. **Import and use:**
 
 ```jsx
-import { ThemeProvider } from 'nmc-ui.v1';
-import './my-custom-theme.scss'; // Импортируйте ваши стили темы
+// Import styles in your main app component or entry file
+import '@nmc/ui/styles/index.scss';
 
-function App() {
+// Import and use components
+import { Button } from '@nmc/ui';
+
+export default function MyComponent() {
   return (
-    <ThemeProvider 
-      defaultTheme="my-custom-theme" 
-      customThemes={['my-custom-theme']}
-    >
-      <YourApp />
-    </ThemeProvider>
+    <div className="nmc-ui neumorphic-light">
+      <Button>Local Development</Button>
+    </div>
   );
 }
 ```
 
-## Компоненты
+## 🎭 Theming System
+
+Apply one of the theme classes to your container element to set the theme:
+
+```jsx
+// Neumorphic themes with soft shadows and 3D-like effects
+<div className="nmc-ui neumorphic-light">...</div>
+<div className="nmc-ui neumorphic-dark">...</div>
+
+// Flat themes with clean, minimal design
+<div className="nmc-ui flat-light">...</div>
+<div className="nmc-ui flat-dark">...</div>
+```
+
+## 🧩 Components
 
 ### Button
 
 ```jsx
+import { Button } from 'nmc-ui.v1';  // from npm
+// OR
+import { Button } from '@nmc/ui';    // for local development
+
+// Basic usage
+<Button onClick={() => console.log('Clicked!')}>Click me</Button>
+
+// Size variants
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button> // default
+<Button size="lg">Large</Button>
+
+// Template variants
+<Button template="primary">Primary</Button>
+
+// States
+<Button disabled>Disabled</Button>
+<Button isActive>Active</Button>
+<Button loading>Loading</Button>
+
+// With prefix/suffix
 <Button 
-  template="red"   // red, blue, green
-  size="md"        // sm, md, lg
-  disabled={false}
-  onClick={() => alert('Клик!')}
-  prefix={<Icon />}
-  suffix={<Icon />}
+  prefix={<span>→</span>}
+  suffix={<span>✓</span>}
 >
-  Текст кнопки
+  With Icons
+</Button>
+
+// As a link
+<Button href="https://example.com" target="_blank">
+  External Link
 </Button>
 ```
 
-### ThemeSwitcher
+## 📋 Publishing to NPM
 
-```jsx
-<ThemeSwitcher 
-  themes={['nmc-theme-light', 'nmc-theme-dark', 'my-theme']}
-  label="Выберите тему:"
-/>
+To publish this package to the NPM registry:
+
+```bash
+# Navigate to the package directory
+cd packages/nmc-ui.v1
+
+# Build the package
+pnpm run build
+
+# Login to npm (if not already)
+npm login
+
+# Publish to npm
+npm publish
 ```
 
-## Лучшие практики
+Make sure to update the version in `package.json` before publishing a new version.
 
-1. Всегда оборачивайте ваше приложение в `ThemeProvider` для обеспечения согласованной темизации
-2. Используйте предоставленные CSS-переменные для кастомных стилей, чтобы сохранять консистентность темы
-3. Импортируйте стили на корневом уровне приложения, чтобы они были доступны глобально
-4. При расширении UI кита собственными компонентами, следуйте той же схеме оформления с использованием CSS-переменных
+## 🔄 Using in CI/CD Pipeline
+
+Include the build step in your CI/CD workflow:
+
+```yaml
+# Example GitHub Actions workflow step
+- name: Build UI Library
+  run: |
+    cd packages/nmc-ui.v1
+    pnpm install
+    pnpm run build
+```
+
+## 📝 License
+
+MIT © [NMC](https://github.com/Nemec163)
