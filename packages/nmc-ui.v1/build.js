@@ -1,90 +1,55 @@
 const { build } = require('esbuild');
 const { execSync } = require('child_process');
 const fs = require('fs');
+const path = require('path');
 
-// Убедимся, что директория dist существует
-if (!fs.existsSync('./dist')) {
-  fs.mkdirSync('./dist');
-}
+const DIST_DIR = path.resolve(__dirname, 'dist');
+const STYLE_SRC = 'src/styles/index.scss';
+const STYLE_OUT = 'dist/styles/index.css';
 
-// Функция для сборки с указанным форматом
-async function buildBundle(format, outfile) {
-  console.log(`Сборка ${format} бандла...`);
+const clean = () => {
+  if (fs.existsSync(DIST_DIR)) fs.rmSync(DIST_DIR, { recursive: true, force: true });
+  fs.mkdirSync(path.join(DIST_DIR, 'styles'), { recursive: true });
+};
+
+const buildTypes = () => {
+  console.log('📄 Type generation...');
+  execSync('tsc --emitDeclarationOnly');
+};
+
+const buildSCSS = () => {
+  console.log('🎨 SCSS Compilation...');
+  execSync(`sass ${STYLE_SRC} ${STYLE_OUT}`);
+};
+
+const buildBundle = async (format, outfile) => {
+  console.log(`📦 Bundling ${format}...`);
+  await build({
+    entryPoints: ['src/index.ts'],
+    bundle: true,
+    minify: true,
+    sourcemap: true,
+    platform: 'neutral',
+    format,
+    outfile,
+    external: ['react', 'react-dom'],
+    loader: { '.scss': 'empty' },
+    define: {
+      'process.env.NODE_ENV': '"production"'
+    }
+  });
+};
+
+(async () => {
   try {
-    await build({
-      entryPoints: ['src/index.ts'],
-      bundle: true,
-      minify: true,
-      sourcemap: true,
-      platform: 'neutral',
-      format: format,
-      outfile: outfile,
-      external: ['react', 'react-dom'],
-      // Настройка для обработки SCSS файлов (пустая обработка, т.к. мы компилируем SCSS отдельно)
-      loader: { 
-        '.scss': 'empty' 
-      },
-      define: {
-        'process.env.NODE_ENV': '"production"'
-      }
-    });
-    console.log(`✅ ${format.toUpperCase()} сборка успешно завершена`);
-  } catch (error) {
-    console.error(`❌ Ошибка при сборке ${format}:`, error);
-    process.exit(1);
-  }
-}
-
-// Запуск сборки
-async function runBuild() {
-  try {
-    // Создаем директорию dist, если она не существует
-    if (!fs.existsSync('./dist')) {
-      fs.mkdirSync('./dist');
-    }
-    
-    // Создаем директорию для стилей
-    if (!fs.existsSync('./dist/styles')) {
-      fs.mkdirSync('./dist/styles', { recursive: true });
-    }
-
-    // Очистка директории dist сохраняя саму директорию
-    console.log('Очистка директории dist...');
-    const files = fs.readdirSync('./dist');
-    for (const file of files) {
-      const path = `./dist/${file}`;
-      if (fs.lstatSync(path).isDirectory()) {
-        fs.rmSync(path, { recursive: true, force: true });
-      } else {
-        fs.unlinkSync(path);
-      }
-    }
-    console.log('✅ Директория dist очищена');
-
-    // Генерация TypeScript деклараций
-    console.log('Генерация TypeScript деклараций...');
-    execSync('tsc --emitDeclarationOnly');
-    console.log('✅ TypeScript декларации сгенерированы');
-
-    // Запуск esbuild для CJS и ESM версий
+    clean();
+    buildTypes();
     await buildBundle('cjs', 'dist/index.js');
     await buildBundle('esm', 'dist/index.esm.js');
-
-    // Компиляция SCSS
-    console.log('Компиляция SCSS...');
-    execSync('sass src/styles/index.scss dist/styles/index.css');
-    console.log('✅ SCSS скомпилированы');
-
-    // Копирование SCSS файлов
-    console.log('Копирование SCSS файлов...');
-    execSync('cpx "src/**/*.scss" dist');
-    console.log('✅ SCSS файлы скопированы');
-
-    console.log('🎉 Сборка успешно завершена!');
-  } catch (error) {
-    console.error('❌ Ошибка при сборке:', error);
+    buildSCSS();
+    console.log('✅ Build completed successfully!');
+  } catch (e) {
+    console.error('❌ Build error', e);
     process.exit(1);
   }
-}
-
-runBuild();
+})();

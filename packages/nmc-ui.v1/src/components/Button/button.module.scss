@@ -1,3 +1,5 @@
+@use '../../styles/mixins/neumorphic' as *;
+
 .component {  
   display: flex;
   align-items: center;
@@ -6,8 +8,10 @@
   white-space: nowrap;
   background: var(--background-out);
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow);
+
+  &.glow{
+    @include text-glow;
+  }
   
   .prefix {
     margin: 0 var(--spacing-small) 0 0;
@@ -28,33 +32,37 @@
     cursor: auto;
     pointer-events: none;
   }
-  
-  &.active, &:active {
-    background: var(--background-in);
-    box-shadow: var(--shadow-in);
-    color: var(--text-glow);
-    text-shadow: var(--shadow-glow);
-  }
 
   // SIZES
   &.sm {
-    font-size: var(--font-size-small);
-    line-height: var(--line-height-small);
-    padding: calc(var(--spacing-small) / 2) var(--spacing-small);
-    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
+    padding: calc(var(--spacing-sm) / 2) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
   }
 
   &.md {
-    font-size: var(--font-size-medium);
-    line-height: var(--line-height-medium);
-    padding: var(--spacing-small) var(--spacing-medium);
-    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
   }
 
   &.lg {
-    font-size: var(--font-size-large);
-    line-height: var(--line-height-large);
-    padding: var(--spacing-medium) var(--spacing-large);
-    border-radius: var(--border-radius-large);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+  }
+}
+
+:global(.neumorphic-light),
+:global(.neumorphic-dark) {
+  .component{
+    @include neumorphic-out;
+    
+    &.active {
+      @include neumorphic-in;
+    }
   }
 }

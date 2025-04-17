@@ -1,89 +1,187 @@
-// Core design tokens - these are shared across all themes
-:root {
-  // Spacing system
-  --spacing-small: #{toRem(8px)};
-  --spacing-medium: #{toRem(16px)};
-  --spacing-large: #{toRem(24px)};
+@use './tools/toRem' as *;
+@use './variables' as vars;
+
+// ========================================
+// Design Tokens
+// ========================================
+
+// The theme system is structured with clear token groups for each theme variant
+
+// ===== THEME VARIANTS =====
+
+// --- NEUMORPHIC DARK ---
+$theme-neumorphic-dark: (
+  // Color tokens
+  border-color: #2a2a2a,
+  text-primary: #a6a6a6,
+  text-secondary: #808080,
   
-  // Border radius
-  --border-radius-small: #{toRem(4px)};
-  --border-radius-medium: #{toRem(8px)};
-  --border-radius-large: #{toRem(12px)};
-  --border-radius-full: 100%;
+  // Glow effect tokens
+  shadow-glow: "#{toRem(0px)} #{toRem(0px)} #{toRem(3px)} #00FF00, #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} #00FF00",
+  text-glow: #00FF00,
+  text-glow-bright: #33FF33,
+  text-glow-brightest: #66FF66,
+  
+  // Surface tokens
+  background: #33333d,
+  background-in: "linear-gradient(145deg, #2b2b35, #3a3a45)",
+  background-out: "linear-gradient(145deg, #414151, #252534)",
+  
+  // Shadow tokens
+  shadow: "#{toRem(6px)} #{toRem(6px)} #{toRem(12px)} #1e1e28, #{toRem(-6px)} #{toRem(-6px)} #{toRem(12px)} #484858",
+  shadow-in: "inset #{toRem(6px)} #{toRem(6px)} #{toRem(12px)} #1e1e28, inset #{toRem(-6px)} #{toRem(-6px)} #{toRem(12px)} #484858"
+);
 
-  // Typography
-  --font-size-small: #{toRem(12px)};
-  --font-size-medium: #{toRem(16px)};
-  --font-size-large: #{toRem(20px)};
-  --line-height-small: #{toRem(18px)};
-  --line-height-medium: #{toRem(24px)};
-  --line-height-large: #{toRem(30px)};
+// --- NEUMORPHIC LIGHT ---
+$theme-neumorphic-light: (
+  // Color tokens
+  border-color: #d1d1d6,
+  text-primary: #505050,
+  text-secondary: #696969,
+  
+  // Glow effect tokens
+  shadow-glow: "#{toRem(0px)} #{toRem(0px)} #{toRem(3px)} #FF4500, #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} #FF4500",
+  text-glow: #FF4500,
+  text-glow-bright: #FF6A00,
+  text-glow-brightest: #FF8800,
+  
+  // Surface tokens
+  background: #e0e0e0,
+  background-in: "linear-gradient(145deg, #cacaca, #f0f0f0)",
+  background-out: "linear-gradient(145deg, #f0f0f0, #cacaca)",
+  
+  // Shadow tokens
+  shadow: "#{toRem(5px)} #{toRem(5px)} #{toRem(10px)} #bebebe, #{toRem(-5px)} #{toRem(-5px)} #{toRem(10px)} #ffffff",
+  shadow-in: "inset #{toRem(5px)} #{toRem(5px)} #{toRem(10px)} #bebebe, inset #{toRem(-5px)} #{toRem(-5px)} #{toRem(10px)} #ffffff"
+);
 
-  // Layout
-  --backdrop-blur: #{toRem(12px)}; 
-  --adaptiveHeight: #{calc(100vh - toRem(256px))};
-}
+// --- FLAT DARK ---
+$theme-flat-dark: (
+  // Color tokens
+  border-color: #1a1a1a,
+  text-primary: #f5f5f5,
+  text-secondary: #cccccc,
+  
+  // Glow effect tokens (disabled)
+  shadow-glow: none,
+  text-glow: none,
+  
+  // Surface tokens
+  background: #101010,
+  background-in: #121212,
+  background-out: #1f1f1f,
+  
+  // Shadow tokens (disabled)
+  shadow: none,
+  shadow-in: none
+);
 
-// Theme definitions
-.nmc-theme-dark {
-  // Colors
-  --border-color: #2a2a2a;
-  --text-primary: #a6a6a6;
-  --text-secondary: #808080;
+// --- FLAT LIGHT ---
+$theme-flat-light: (
+  // Color tokens
+  border-color: #dddddd,
+  text-primary: #1a1a1a,
+  text-secondary: #4d4d4d,
+  
+  // Glow effect tokens (disabled)
+  shadow-glow: none,
+  text-glow: none,
+  
+  // Surface tokens
+  background: #ffffff,
+  background-in: #f7f7f7,
+  background-out: #eeeeee,
+  
+  // Shadow tokens (disabled)
+  shadow: none,
+  shadow-in: none
+);
+
+// ===== SIZING AND SPACING TOKENS =====
+
+// Shared sizing variables for desktop
+$theme-root: (
+  // Spacing scale
+  spacing-xs: #{toRem(4px)},
+  spacing-sm: #{toRem(8px)},
+  spacing-md: #{toRem(16px)},
+  spacing-lg: #{toRem(24px)},
+  spacing-xl: #{toRem(32px)},
+
+  // Border radius scale
+  border-radius-sm: #{toRem(4px)},
+  border-radius-md: #{toRem(8px)},
+  border-radius-lg: #{toRem(16px)},
+  border-radius-full: 100%,
+
+  // Typography scale
+  font-size-xs: #{toRem(10px)},
+  font-size-sm: #{toRem(12px)},
+  font-size-md: #{toRem(16px)},
+  font-size-lg: #{toRem(20px)},
+  font-size-xl: #{toRem(24px)},
+
+  // Line height scale
+  line-height-sm: #{toRem(18px)},
+  line-height-md: #{toRem(24px)},
+  line-height-lg: #{toRem(32px)},
 
   // Effects
-  --text-glow: #00FF00;
-  --text-glow-bright: #00FF88;
-  --text-glow-brightest: #00FFAA;
-  --shadow-glow: #{toRem(0px)} #{toRem(0px)} #{toRem(3px)} var(--text-glow), #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} var(--text-glow);
+  backdrop-blur: #{toRem(12px)},
+);
 
-  // Backgrounds
-  --background: #33333d; /* Flat surfaces background */
-  --background-in: linear-gradient(145deg, #2b2b35, #3a3a45); /* Inner surfaces background */
-  --background-out: linear-gradient(145deg, #414151, #252534); /* Outer surfaces background */
+// Mobile-specific sizing variables
+$theme-root-mobile: (
+  // Spacing scale (smaller for mobile)
+  spacing-xs: #{toRem(2px)},
+  spacing-sm: #{toRem(6px)},
+  spacing-md: #{toRem(12px)},
+  spacing-lg: #{toRem(20px)},
+  spacing-xl: #{toRem(28px)},
 
-  // Shadows
-  --shadow: #{toRem(6px)} #{toRem(6px)} #{toRem(12px)} #1e1e28, #{toRem(-6px)} #{toRem(-6px)} #{toRem(12px)} #484858;
-  --shadow-in: inset #{toRem(6px)} #{toRem(6px)} #{toRem(12px)} #1e1e28, inset #{toRem(-6px)} #{toRem(-6px)} #{toRem(12px)} #484858;
-}
+  // Border radius scale (smaller for mobile)
+  border-radius-sm: #{toRem(2px)},
+  border-radius-md: #{toRem(4px)},
+  border-radius-lg: #{toRem(10px)},
 
-.nmc-theme-light {
-  // Colors
-  --border-color: #d1d1d6;
-  --text-primary: #505050;
-  --text-secondary: #696969;
-  
-  // Effects
-  --text-glow: #FF4500;
-  --text-glow-bright: #FF6633;
-  --text-glow-brightest: #FF8866;
-  --shadow-glow: #{toRem(0px)} #{toRem(0px)} #{toRem(3px)} var(--text-glow), #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} var(--text-glow);
+  // Typography scale (smaller for mobile)
+  font-size-xs: #{toRem(9px)},
+  font-size-sm: #{toRem(11px)},
+  font-size-md: #{toRem(14px)},
+  font-size-lg: #{toRem(18px)},
+  font-size-xl: #{toRem(20px)},
 
-  // Backgrounds
-  --background: #e0e0e0; /* Flat surfaces background */
-  --background-in: linear-gradient(145deg, #cacaca, #f0f0f0); /* Inner surfaces background */
-  --background-out: linear-gradient(145deg, #f0f0f0, #cacaca); /* Outer surfaces background */
+  // Line height scale (smaller for mobile)
+  line-height-sm: #{toRem(16px)},
+  line-height-md: #{toRem(20px)},
+  line-height-lg: #{toRem(28px)},
+);
 
-  // Shadows
-  --shadow: #{toRem(5px)} #{toRem(5px)} #{toRem(10px)} #bebebe, #{toRem(-5px)} #{toRem(-5px)} #{toRem(10px)} #ffffff;
-  --shadow-in: inset #{toRem(5px)} #{toRem(5px)} #{toRem(10px)} #bebebe, inset #{toRem(-5px)} #{toRem(-5px)} #{toRem(10px)} #ffffff;
-}
+// ========================================
+// Theme Application
+// ========================================
 
-// Backward compatibility for existing code
-.dark { @extend .nmc-theme-dark; }
-.light { @extend .nmc-theme-light; }
-
-// Responsive adjustments
-@media (max-width: 768px) {
-  :root {
-    --spacing-small: #{toRem(4px)};
-    --spacing-medium: #{toRem(8px)};
-    --spacing-large: #{toRem(16px)};
-    
-    --border-radius-small: #{toRem(2px)};
-    --border-radius-medium: #{toRem(4px)};
-    --border-radius-large: #{toRem(8px)};
-
-    --adaptiveHeight: #{calc(100vh - toRem(220px))};
+/// Applies CSS custom properties (variables) from a Sass map to a selector
+/// @param {Map} $map - Map of variable names and values to convert to CSS custom properties
+/// @param {String} $selector - CSS selector to apply the custom properties to
+@mixin apply-theme-vars($map, $selector) {
+  #{$selector} {
+    @each $key, $val in $map {
+      --#{$key}: #{$val};
+    }
   }
+}
+
+// Apply theme variants - these must come first to establish theming context
+@include apply-theme-vars($theme-neumorphic-dark, '.neumorphic-dark.nmc-ui');
+@include apply-theme-vars($theme-neumorphic-light, '.neumorphic-light.nmc-ui');
+@include apply-theme-vars($theme-flat-dark, '.flat-dark.nmc-ui');
+@include apply-theme-vars($theme-flat-light, '.flat-light.nmc-ui');
+
+// Apply shared sizing variables to all nmc-ui elements
+@include apply-theme-vars($theme-root, '.nmc-ui');
+
+// Apply mobile sizing variables at mobile breakpoint
+@media (max-width: vars.$breakpoint-mobile) {
+  @include apply-theme-vars($theme-root-mobile, '.nmc-ui');
 }

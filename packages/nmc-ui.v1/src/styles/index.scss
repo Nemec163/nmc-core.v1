@@ -1,4 +1,51 @@
-@import './tools/toRem.scss';
-@import './animations.scss';
-@import './theme.scss';
-@import './global.scss';
+// ========================================
+// NMC UI Style System
+// ========================================
+
+// Core Configuration
+// These define the foundation of the styling system
+@forward './variables';
+
+// Tools & Utilities
+// Functions and mixins to be used by components
+@forward './tools/toRem';
+
+// Global Styles
+// Base styling and normalization
+@forward './global';
+
+// Design Tokens
+// Theme variables and design system
+@forward './theme';
+
+// Animation System
+// Keyframes and animation utilities
+@forward './animations';
+
+// Component Mixins
+// Reusable style patterns for components
+@forward './mixins/neumorphic';
+
+// ========================================
+// Usage Instructions
+// ========================================
+// To use this styling system in a component:
+// 
+// 1. Import basic tools:
+//    @use '@nmc-ui.v1/src/styles/tools/toRem' as *;
+//
+// 2. For themed components, add appropriate theme class:
+//    <div class="nmc-ui neumorphic-dark">...</div>
+//    Available themes: neumorphic-dark, neumorphic-light, flat-dark, flat-light
+//
+// 3. Apply neumorphic styling using mixins:
+//    @use '@nmc-ui.v1/src/styles/mixins/neumorphic' as *;
+//    .my-component {
+//      @include neumorphic-out;
+//    }
+//
+// 4. Use CSS variables for consistent styling:
+//    .my-component {
+//      margin: var(--spacing-md);
+//      border-radius: var(--border-radius-sm);
+//    }

@@ -1,20 +1,25 @@
 @use 'sass:math';
+@use 'sass:meta';
+@use '../variables' as vars;
 
-@function toRem($_PixelsInSketch) {
-  // Проверка наличия единицы измерения и что это не 'rem'
-  @if unit($_PixelsInSketch) == 'rem' {
-    @return $_PixelsInSketch;
+/// Converts pixel values to rem units
+/// @param {Number} $value - Value in pixels
+/// @param {Boolean} $useRem - Whether to use rem units (defaults to vars.$useRem)
+/// @return {Number} - Value in rem if $useRem is true, otherwise unchanged px value
+@function toRem($value, $useRem: vars.$useRem) {
+  // Return early if the value is already in rem
+  @if math.unit($value) == 'rem' {
+    @return $value;
   }
 
-  // Проверяем, что значение является числом и имеет единицу измерения 'px'
-  @if type-of($_PixelsInSketch) == 'number' and unit($_PixelsInSketch) == 'px' {
-    // Вычисляем результат деления, поддерживая отрицательные значения
-    $pixels: math.div($_PixelsInSketch, 1px); // Преобразуем в чистое число
-    $remValue: $pixels / 14.4; // Переводим пиксели в rem
-    @return #{$remValue}rem; // Возвращаем значение с единицей измерения
+  // Convert px to rem if value is a number with px unit
+  @if meta.type-of($value) == 'number' and math.unit($value) == 'px' {
+    $pure: math.div($value, 1px);
+    @return if($useRem, #{math.div($pure, vars.$baseFontSize)}rem, $value);
   }
 
-  // Если переданное значение не в пикселях
-  @warn "Expected a pixel value, but got #{$_PixelsInSketch}.";
+  // Show warning for non-px values
+  @warn "toRem() expected a px value, got: #{$value}";
   @return null;
 }
+

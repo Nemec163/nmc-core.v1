@@ -9,6 +9,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
+      "@nmc/ui/*": ["packages/nmc-ui.v1/src/*"],
       "@nmc/ui": ["packages/nmc-ui.v1/src"]
     }
   }

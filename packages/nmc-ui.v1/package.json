@@ -1,44 +1,57 @@
 {
   "name": "nmc-ui.v1",
   "version": "1.0.0",
-  "description": "UI компоненты для проектов NMC",
+  "description": "NMC UI Components",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "style": "dist/styles/index.css",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "style": "./dist/styles/index.css"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["dist/*"]
+    }
+  },
   "files": [
     "dist",
     "README.md"
   ],
-  "sideEffects": ["**/*.css", "**/*.scss"],
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
   "scripts": {
-    "build:scss": "sass src/styles/index.scss dist/styles/index.css",
-    "build:types": "tsc --emitDeclarationOnly",
-    "copy:scss": "cpx \"src/**/*.scss\" dist",
-    "clean": "rm -rf dist",
-    "build": "node build.js"
+    "build": "node build.js",
+    "clean": "rimraf dist"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "cpx": "^1.5.0",
     "esbuild": "^0.20.0",
     "sass": "^1.86.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "rimraf": "^5.0.0"
   },
-  "keywords": ["ui", "components", "react", "nmc"],
-  "author": "NMC",
-  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/NMC/nmc-core.v1.git",
     "directory": "packages/nmc-ui.v1"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "author": "NMC",
+  "license": "MIT",
+  "keywords": ["ui", "components", "react", "nmc"]
 }

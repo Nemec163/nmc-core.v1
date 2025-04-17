@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["vite/client", "node"],
+    "jsx": "react-jsx"
+  },
+  "include": [
+    ".storybook",
+    "stories",
+    "../nmc-ui.v1/src"
+  ]
+}
