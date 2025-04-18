@@ -19,18 +19,24 @@ jobs:
             cd /root/nmc-core.v1 || git clone https://github.com/Nemec163/nmc-core.v1.git && cd nmc-core.v1
             git pull origin main
 
-            echo "🔁 Building and restarting containers..."
+            echo "🔁 Installing pnpm and building Storybook static files..."
+            corepack enable
+            corepack prepare pnpm@latest --activate
+            pnpm install --frozen-lockfile
+            pnpm --filter nmc-storybook.v1 build
 
-            docker rm -f nmc-site || true
+            echo "🔁 Building and restarting Docker containers..."
+            docker rm -f nmc-site   || true
             docker rm -f nmc-server || true
-            docker rm -f nmc-ui || true
+            docker rm -f nmc-ui     || true
 
-            docker build -t nmc-site ./apps/nmc-site.v1
+            docker build -t nmc-site   ./apps/nmc-site.v1
             docker build -t nmc-server ./apps/nmc-server.v1
-            docker build -t nmc-ui ./packages/nmc-ui.v1
+            docker build -t nmc-ui     ./packages/nmc-ui.v1
 
-            docker run -d --name nmc-site -p 3000:3000 nmc-site
+            docker run -d --name nmc-site   -p 3000:3000 nmc-site
             docker run -d --name nmc-server -p 3001:3000 nmc-server
-            docker run -d --name nmc-ui -p 6006:6006 nmc-ui
+            docker run -d --name nmc-ui     -p 6006:6006 nmc-ui
 
+            echo "🔁 Restarting nginx..."
             systemctl restart nginx
