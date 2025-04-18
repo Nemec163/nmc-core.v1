@@ -1,39 +1,39 @@
-name: CI/CD
+# .github/workflows/deploy-storybook.yml
+name: Deploy Storybook
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-deploy-storybook:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
 
-      - name: Install deps
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build Storybook
         run: pnpm --filter nmc-storybook.v1 run build
 
-  deploy-storybook:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Sync Storybook to server
         uses: burnett01/rsync-deploy@v3
         with:
-          switches: -az --delete
+          switches: -az --delete --chmod=Du=rwx,Fu=rw,go=rx
           path: packages/nmc-storybook.v1/storybook-static/
           remote_host: ${{ secrets.SERVER_HOST }}
           remote_user: ${{ secrets.SERVER_USER }}
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
-          remote_path: /root/nmc-core.v1/packages/nmc-storybook.v1/storybook-static/
+          remote_path: /var/www/storybook/
 
       - name: Reload nginx
         uses: appleboy/ssh-action@master
