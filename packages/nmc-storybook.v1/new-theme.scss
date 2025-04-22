@@ -1,0 +1,44 @@
+// custom-theme.scss
+
+@use "../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 18px,
+  $breakpoint-mobile: 768px,
+  $breakpoint-tablet: 1200px,
+  $breakpoint-desktop: 1800px
+);
+
+$custom-colors: (
+  background: yellow,
+  border-color: green,
+  text-primary: blue,
+  text-secondary: red,
+  text-test: purple,
+);
+
+$custom-sizes: (
+  spacing-xs: ui.toUnit(4px),
+  spacing-sm: ui.toUnit(8px),
+  spacing-md: ui.toUnit(16px),
+  spacing-lg: ui.toUnit(24px),
+  spacing-xl: ui.toUnit(32px),
+  border-radius-sm: ui.toUnit(4px),
+  border-radius-md: ui.toUnit(8px),
+  border-radius-lg: ui.toUnit(16px),
+  border-radius-xl: ui.toUnit(32px),
+  font-size-xs: ui.toUnit(12px),
+  font-size-sm: ui.toUnit(14px),
+  font-size-md: ui.toUnit(16px),
+  font-size-lg: ui.toUnit(18px),
+  heading-sm: ui.toUnit(20px),
+  heading-md: ui.toUnit(24px),
+  heading-lg: ui.toUnit(32px),
+  line-height-sm: ui.toUnit(20px),
+  line-height-md: ui.toUnit(24px),
+  line-height-lg: ui.toUnit(32px),
+  line-height-xl: ui.toUnit(34px),
+  backdrop-blur: ui.toUnit(12px)
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");
+@include ui.apply-theme-vars($custom-sizes, ".my-app.nmc-ui");

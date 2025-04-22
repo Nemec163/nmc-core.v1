@@ -1,4 +1,5 @@
 @use './tools/toUnit' as *;
+@use "sass:math";
 
 @keyframes rotation {
   0% { transform: rotate(0deg); }
@@ -72,7 +73,7 @@
 }
 
 @mixin glow-text($duration: 5s, $timing-function: cubic-bezier(0.65, 0.05, 0.36, 1)) {
-  $delay: random(500) * 1ms;
+  $delay: math.random(500) * 1ms;
   animation: text-glow-animation $duration $timing-function infinite both;
   animation-delay: $delay;
 }

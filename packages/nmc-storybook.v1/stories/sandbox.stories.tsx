@@ -1,6 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import styles from './sandbox.module.scss';
 import '@nmc/ui/styles/index.scss';
+// import '../new-theme.scss';
 
 import { Button } from '../../nmc-ui.v1/src/components/Button';
 import React from 'react';
