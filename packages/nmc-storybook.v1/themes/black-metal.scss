@@ -1,0 +1,27 @@
+// Black Metal Theme for NMC UI
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #1f1f2e,
+  border-color: #4a4a6a,
+  text-primary: #e8e8ff,
+  text-secondary: #c0c0ff,
+  shadow-glow: "0px 0px #{ui.toUnit(3px)} #a0ffff, 0px 0px #{ui.toUnit(8px)} #ffa0ff",
+  text-glow: #a0ffff,
+  text-glow-bright: #cfffff,
+  text-glow-brightest: #ffffff,
+  background-in:  "linear-gradient(145deg, #2a2a42, #3e3e5c)",
+  background-out: "linear-gradient(145deg, #3e3e5c, #2a2a42)",
+  shadow: "#{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(10px)} #000022, #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(10px)} #2e2e4a",
+  shadow-in: "inset #{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(10px)} #000022, inset #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(10px)} #2e2e4a"
+);
+
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");

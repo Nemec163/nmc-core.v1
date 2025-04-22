@@ -70,7 +70,6 @@ $theme-root: (
   backdrop-blur: #{toUnit(12px)}
 );
 
-
 @mixin apply-theme-vars($map, $selector) {
   #{$selector} {
     @each $key, $val in $map {

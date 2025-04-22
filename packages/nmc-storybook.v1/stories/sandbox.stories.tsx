@@ -1,10 +1,9 @@
-import type { Meta, StoryFn } from '@storybook/react';
-import styles from './sandbox.module.scss';
 import '@nmc/ui/styles/index.scss';
-// import '../new-theme.scss';
+import styles from './sandbox.module.scss';
 
-import { Button } from '../../nmc-ui.v1/src/components/Button';
 import React from 'react';
+import type { Meta, StoryFn } from '@storybook/react';
+import { Button, ThemeProvider } from '@nmc/ui/index';
 
 const meta: Meta = {
   title: 'DEV/Sandbox'
@@ -169,25 +168,31 @@ export const Sandbox: StoryFn = (args, context) => {
   };
 
   return (
-    <div className={`nmc-ui ${theme ?? ''} ${styles.page}`}>
-      <Button>Click Me</Button>
-      <div className={styles.docs}>
-        <h2>Theme Variables Cheat Sheet</h2>
-        
-        {themeCategories.map((category) => (
-          <section key={category.title} className={styles.category}>
-            <h3>{category.title}</h3>
-            <div className={`${styles.variables} ${category.grid ? styles[`${category.grid}Grid`] : ''}`}>
-              {category.variables.map((variable) => (
-                <div key={variable.name} className={styles.variable}>
-                  {renderVariablePreview(variable)}
-                  <code>--{variable.name} <span>{variable.value}</span></code>
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
+    <ThemeProvider theme={theme}>
+      <div className={styles.page}>
+        <div className={styles.customThemeSelector}>
+
+        </div>
+        <div className={styles.components}>
+          <Button>Click Me</Button>
+        </div>
+        <div className={styles.docs}>
+          <h2>Theme Variables Cheat Sheet</h2>
+          {themeCategories.map((category) => (
+            <section key={category.title} className={styles.category}>
+              <h3>{category.title}</h3>
+              <div className={`${styles.variables} ${category.grid ? styles[`${category.grid}Grid`] : ''}`}>
+                {category.variables.map((variable) => (
+                  <div key={variable.name} className={styles.variable}>
+                    {renderVariablePreview(variable)}
+                    <code>--{variable.name} <span>{variable.value}</span></code>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };

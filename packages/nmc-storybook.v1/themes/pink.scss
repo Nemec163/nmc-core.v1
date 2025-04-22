@@ -1,0 +1,26 @@
+// Pink white theme for NMC UI
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #f4f4f8,
+  border-color: #d0d0e0,
+  text-primary: #2a2a42,
+  text-secondary: #5c5c7a,
+  shadow-glow: "0px 0px #{ui.toUnit(3px)} #ff3bff, 0px 0px #{ui.toUnit(8px)} #3bfff3",
+  text-glow: #ff3bff,
+  text-glow-bright: #ff80ff,
+  text-glow-brightest: #ffffff,
+  background-in:  "linear-gradient(145deg, #ececf2, #f8f8fc)",
+  background-out: "linear-gradient(145deg, #f8f8fc, #ececf2)",
+  shadow: "#{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(10px)} #c8c8d8, #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(10px)} #ffffff",
+  shadow-in: "inset #{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(10px)} #c8c8d8, inset #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(10px)} #ffffff"
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");

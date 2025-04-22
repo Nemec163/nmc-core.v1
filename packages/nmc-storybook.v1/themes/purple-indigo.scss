@@ -1,0 +1,26 @@
+// Purple Indigo Theme for NMC UI
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #0b0013,
+  border-color: #330033,
+  text-primary: #e2ff00,
+  text-secondary: #00ffe2,
+  shadow-glow: "0px 0px #{ui.toUnit(4px)} #e2ff00, 0px 0px #{ui.toUnit(12px)} #00ffe2",
+  text-glow: #e2ff00,
+  text-glow-bright: #f0ff66,
+  text-glow-brightest: #ffffff,
+  background-in:  "linear-gradient(145deg, #12001f, #1a0033)"
+  background-out: "linear-gradient(145deg, #1a0033, #12001f)",
+  shadow: "#{ui.toUnit(8px)} #{ui.toUnit(8px)} #{ui.toUnit(16px)} #000018, #{ui.toUnit(-8px)} #{ui.toUnit(-8px)} #{ui.toUnit(16px)} #330033",
+  shadow-in: "inset #{ui.toUnit(8px)} #{ui.toUnit(8px)} #{ui.toUnit(16px)} #000018, inset #{ui.toUnit(-8px)} #{ui.toUnit(-8px)} #{ui.toUnit(16px)} #330033"
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");

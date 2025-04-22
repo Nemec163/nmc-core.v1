@@ -1,0 +1,25 @@
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #ece8e1,
+  border-color: #c8c2b6,
+  text-primary: #3b3a36,
+  text-secondary: #a56c40,
+  shadow-glow: "0px 0px #{ui.toUnit(1px)} #a56c40, 0px 0px #{ui.toUnit(4px)} #a56c40",
+  text-glow: #a56c40,
+  text-glow-bright: #c5885a,
+  text-glow-brightest: #fff8f2,
+  background-in:  "linear-gradient(145deg, #ece8e1, #e1dcd3)",
+  background-out: "linear-gradient(145deg, #e1dcd3, #ece8e1)",
+  shadow: "#{ui.toUnit(6px)} #{ui.toUnit(6px)} #{ui.toUnit(12px)} rgba(0,0,0,0.08), #{ui.toUnit(-6px)} #{ui.toUnit(-6px)} #{ui.toUnit(12px)} #ffffff",
+  shadow-in: "inset #{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(8px)} rgba(0,0,0,0.04), inset #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(8px)} #ffffff"
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");

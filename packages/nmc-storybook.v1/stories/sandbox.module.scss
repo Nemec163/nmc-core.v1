@@ -2,41 +2,57 @@
 @use '../../nmc-ui.v1/src/styles/animations' as animations;
 @use '../../nmc-ui.v1/src/styles/mixins/neumorphic' as neumorphic;
 
-.page {
-  min-height: 100svh;
-  height: 100%;
-  padding: var(--spacing-xl);
-  background-color: var(--background);
 
-  &:global(.flat-dark),
-  &:global(.flat-light) {
-    background-color: var(--text-primary);
+:global(.nmc-ui) {
+  &:not(:global(.flat-light)):not(:global(.flat-dark)) {
+    background-color: var(--background);
 
-    .docs{
-      h2{
-        color: var(--background);
-      }
-    }
-  }
-
-  &:global(.neumorphic-dark),
-  &:global(.neumorphic-light) {
-    .docs{
-      .category{
-        @include neumorphic.neumorphic-flat;
-
-        h3{
-          @include neumorphic.text-glow;
+    .page{
+      background-color: var(--background-in);
+      box-shadow: var(--shadow);
+  
+      .docs{
+        h2{
+          color: var(--text-primary);
         }
-
-        .variable{
-          code{
-            @include neumorphic.neumorphic-in;
+  
+        .category{
+          @include neumorphic.neumorphic-flat;
+    
+          h3{
+            @include neumorphic.text-glow;
+          }
+    
+          .variable{
+            code{
+              @include neumorphic.neumorphic-in;
+            }
           }
         }
       }
     }
   }
+
+  &:global(.flat-light), 
+  &:global(.flat-dark) {
+    .page{
+      background-color: var(--text-primary);
+      box-shadow: none;
+  
+      .docs{
+        h2{
+          color: var(--background);
+        }
+      }
+    }
+  }
+}
+
+.page {
+  min-height: 100svh;
+  height: 100%;
+  padding: var(--spacing-xl);
+  background-color: var(--background);
 
   .docs {
     margin: var(--spacing-md) 0 0 0;
@@ -187,9 +203,7 @@
         font-size: var(--font-size-xs);
         color: var(--text-primary);
       }
-  
-      // Regular shadow example
-      &.shadowNormal { 
+        &.shadowNormal { 
         background-color: var(--background);
         box-shadow: var(--shadow);
         
@@ -214,12 +228,6 @@
         &::before {
           content: 'Glow';
         }
-      }
-      
-      :global(.flat-dark) &, :global(.flat-light) & {
-        background-color: var(--background);
-        box-shadow: none;
-        border: 1px solid var(--border-color);
       }
     }
     

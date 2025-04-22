@@ -55,18 +55,19 @@
   }
 }
 
-:global(.neumorphic-light),
-:global(.neumorphic-dark) {
-  .component{
-    @include neumorphic-out;
+:global(.nmc-ui) {
+  &:not(:global(.flat-light)):not(:global(.flat-dark)) {
+    .component {
+      @include neumorphic-out;
 
-    &:hover {
-      opacity: 1;
-    }
-    
-    &.active {
-      @include neumorphic-in;
-      @include text-glow(false);
+      &:hover {
+        opacity: 1;
+      }
+
+      &.active {
+        @include neumorphic-in;
+        @include text-glow(false);
+      }
     }
   }
 }

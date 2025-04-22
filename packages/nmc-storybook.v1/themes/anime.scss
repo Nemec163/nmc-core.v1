@@ -1,0 +1,26 @@
+// custom-theme-anime-light.scss
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #fff8f0,
+  border-color: #ffe4c4,
+  text-primary: #ff4500,
+  text-secondary: #ff8c00,
+  shadow-glow: "0px 0px #{ui.toUnit(3px)} #ffd27f, 0px 0px #{ui.toUnit(8px)} #ff6347",
+  text-glow: #ffd27f,
+  text-glow-bright: #ffeaa7,
+  text-glow-brightest: #ffffff,
+  background-in:  "linear-gradient(145deg, #fff8f0, #ffe8d0)",
+  background-out: "linear-gradient(145deg, #ffe8d0, #fff8f0)",
+  shadow: "#{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(10px)} #ffd0a0, #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(10px)} #ffffff",
+  shadow-in: "inset #{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(10px)} #ffd0a0, inset #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(10px)} #ffffff"
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");

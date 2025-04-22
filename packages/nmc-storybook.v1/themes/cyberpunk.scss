@@ -1,0 +1,26 @@
+// Cyberpunk theme for NMC UI
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #08080f,
+  border-color: #2a2a3e,
+  text-primary: #e0e0ff,
+  text-secondary: #8888aa,
+  shadow-glow: "0px 0px #{ui.toUnit(3px)} #ff00ff, 0px 0px #{ui.toUnit(10px)} #00ffff",
+  text-glow: #ff00ff,
+  text-glow-bright: #ff4cff,
+  text-glow-brightest: #ff80e6,
+  background-in:  "linear-gradient(145deg, #0a0a13, #10101f)",
+  background-out: "linear-gradient(145deg, #11111f, #080814)",
+  shadow: "#{ui.toUnit(6px)} #{ui.toUnit(6px)} #{ui.toUnit(12px)} #00001a, #{ui.toUnit(-6px)} #{ui.toUnit(-6px)} #{ui.toUnit(12px)} #282840",
+  shadow-in: "inset #{ui.toUnit(6px)} #{ui.toUnit(6px)} #{ui.toUnit(12px)} #00001a, inset #{ui.toUnit(-6px)} #{ui.toUnit(-6px)} #{ui.toUnit(12px)} #282840"
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");

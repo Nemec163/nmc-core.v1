@@ -1,0 +1,26 @@
+// custom-theme-retrofuturo-light.scss
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #f2f4f7,
+  border-color: #c8cad1,
+  text-primary: #0077ff,
+  text-secondary: #00ccff,
+  shadow-glow: "0px 0px #{ui.toUnit(3px)} #00ccff, 0px 0px #{ui.toUnit(8px)} #0077ff",
+  text-glow: #00ccff,
+  text-glow-bright: #66e0ff,
+  text-glow-brightest: #ffffff,
+  background-in:  "linear-gradient(145deg, #f2f4f7, #e0e4eb)",
+  background-out: "linear-gradient(145deg, #e0e4eb, #f2f4f7)",
+  shadow: "#{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(10px)} #c0c4cc, #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(10px)} #ffffff",
+  shadow-in: "inset #{ui.toUnit(4px)} #{ui.toUnit(4px)} #{ui.toUnit(10px)} #c0c4cc, inset #{ui.toUnit(-4px)} #{ui.toUnit(-4px)} #{ui.toUnit(10px)} #ffffff"
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");

@@ -1,0 +1,26 @@
+// Nightwave theme for NMC UI
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #100c1a,
+  border-color: #2f2140,
+  text-primary: #f9a8d4,
+  text-secondary: #7de0eb,
+  shadow-glow: "0px 0px #{ui.toUnit(4px)} #f9a8d4, 0px 0px #{ui.toUnit(10px)} #7de0eb",
+  text-glow: #f9a8d4,
+  text-glow-bright: #ffcef7,
+  text-glow-brightest: #ffffff,
+  background-in:  "linear-gradient(145deg, #100c1a, #1e1332)",
+  background-out: "linear-gradient(145deg, #1e1332, #100c1a)",
+  shadow: "#{ui.toUnit(6px)} #{ui.toUnit(6px)} #{ui.toUnit(14px)} #00000d, #{ui.toUnit(-6px)} #{ui.toUnit(-6px)} #{ui.toUnit(14px)} #2f2140",
+  shadow-in: "inset #{ui.toUnit(6px)} #{ui.toUnit(6px)} #{ui.toUnit(14px)} #00000d, inset #{ui.toUnit(-6px)} #{ui.toUnit(-6px)} #{ui.toUnit(14px)} #2f2140"
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");
