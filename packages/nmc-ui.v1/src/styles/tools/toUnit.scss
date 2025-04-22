@@ -1,0 +1,27 @@
+@use "sass:math";
+@use "../variables" as vars;
+
+@function toUnit($value) {
+  @if vars.$useRem and unit($value) == 'rem' {
+    @return $value;
+  }
+
+  @if type-of($value) == 'number' and unit($value) == 'px' {
+    $px-number: math.div($value, 1px);
+
+    @if vars.$useRem {
+      $base-number: math.div(vars.$baseFontSize, 1px);
+      $ratio: math.div($px-number, $base-number);
+      @return $ratio * 1rem;
+    } @else {
+      @return $px-number * 1px;
+    }
+  }
+
+  @if type-of($value) == 'number' and unit($value) == '' {
+    @return toUnit($value * 1px);
+  }
+
+  @warn "toUnit: unexpected value: #{$value}";
+  @return $value;
+}

@@ -1,4 +1,4 @@
-@use '../../nmc-ui.v1/src/styles/tools/toRem.scss' as *;
+@use '../../nmc-ui.v1/src/styles/tools/toUnit' as *;
 @use '../../nmc-ui.v1/src/styles/animations' as animations;
 @use '../../nmc-ui.v1/src/styles/mixins/neumorphic' as neumorphic;
 
@@ -27,6 +27,12 @@
 
         h3{
           @include neumorphic.text-glow;
+        }
+
+        .variable{
+          code{
+            @include neumorphic.neumorphic-in;
+          }
         }
       }
     }
@@ -58,18 +64,18 @@
       
       .variables {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, toUnit(140px));
         gap: var(--spacing-md);
         border-top: 1px solid var(--border-color);
         padding: var(--spacing-md) 0 0;
       }
   
       .typographyGrid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, toUnit(170px));
       }
       
       .animationsGrid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, toUnit(130px));
       }
       
       .variable {
@@ -84,13 +90,17 @@
           background-color: var(--background);
           border-radius: var(--border-radius-sm);
           color: var(--text-secondary);
+          justify-content: space-between;
           margin-top: var(--spacing-md);
-          box-shadow: var(--shadow-in);
-          white-space: nowrap;
           width: 100%;
-  
-          :global(.flat-dark) &, :global(.flat-light) & {
-            border: 1px solid var(--border-color);
+          border: 1px solid var(--border-color);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          span{
+            color: inherit;
+            font-size: inherit;
           }
         }
       }
@@ -228,16 +238,14 @@
       &.fontSizeLg { font-size: var(--font-size-lg); }
       &.headingSm { font-size: var(--heading-sm); }
       &.headingMd { font-size: var(--heading-md); }
-      &.headingLg { 
-        font-size: clamp(24px, var(--heading-lg), 30px);
-      }
+      &.headingLg { font-size: var(--heading-lg); }
     }
     
     .animation {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 50px;
+      height: toUnit(50px);
       width: 100%;
       position: relative;
       margin-bottom: var(--spacing-sm);
@@ -309,6 +317,26 @@
         font-size: var(--font-size-xs);
         color: var(--background);
         white-space: nowrap;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .page{
+    .docs{
+      .category{
+        .variables {
+          grid-template-columns: unset;
+        }
+    
+        .typographyGrid {
+          grid-template-columns: unset;        
+        }
+        
+        .animationsGrid {
+          grid-template-columns: unset;        
+        }
       }
     }
   }

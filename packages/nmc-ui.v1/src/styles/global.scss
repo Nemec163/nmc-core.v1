@@ -1,5 +1,5 @@
 @use './variables' as *;
-@use './tools/toRem' as *;
+@use './tools/toUnit' as *;
 @use 'sass:math';
 
 .nmc-ui {
@@ -9,7 +9,7 @@
     outline: 0;
     padding: 0;
     margin: 0;
-    font-size: if($useRem, 1vw, 16px);
+    font-size: $baseFontSize;
     font-weight: 400;
     font-family: 'Nunito Sans', sans-serif;
     font-optical-sizing: auto;
@@ -69,15 +69,27 @@
     }
   }
   
-  @media screen and (min-width: $breakpoint-desktop) {
-    * {
-      font-size: if($useRem, $baseFontSize, 16px);
-    }
+}
+
+@if $useRem {
+  * {
+    font-size:  1vw;
   }
   
-  @media screen and (max-width: $breakpoint-mobile) {
+  @media screen and (min-width: #{$breakpoint-desktop}px) {
     * {
-      font-size: if($useRem, #{math.div($baseFontSize * 100, 375)}vw, 16px);
+      font-size: $baseFontSize;
+    }
+  }
+  @media screen and (max-width: #{$breakpoint-tablet}px) {
+    * {
+      font-size: #{$breakpoint-desktop / $breakpoint-tablet}vw;
+    }
+  }
+  @media screen and (max-width: #{$breakpoint-mobile}px) {
+    * {
+      font-size: #{$breakpoint-desktop / 375}vw;
     }
   }
 }
+

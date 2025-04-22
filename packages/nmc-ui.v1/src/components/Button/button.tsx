@@ -43,8 +43,9 @@ const Button = ({
 
   const params = {
     onClick: disabled || loading ? undefined : onClick,
-    onMouseDown: handleMouseDown,
-    onMouseUp: handleMouseUp,
+    onPointerDown: handleMouseDown,
+    onPointerUp: handleMouseUp,
+    onPointerCancel: handleMouseUp,
     className: `${styles.glow} ${styles.component} ${template ? styles[template] : ''} ${size ? styles[size] : ''} ${isActive ? styles.active : ''} ${disabled ? styles.disabled : ''} ${className ? className : ''}`,
     href: disabled || loading ? undefined : href,
     form

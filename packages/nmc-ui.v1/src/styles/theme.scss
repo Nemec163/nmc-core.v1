@@ -1,19 +1,19 @@
-@use './tools/toRem' as *;
-@use './variables' as vars;
+@use './tools/toUnit' as *;
+@use './variables.scss' as vars;
 
 $theme-neumorphic-dark: (
   background: #33333d,
   border-color: #2a2a2a,
   text-primary: #a6a6a6,
   text-secondary: #808080,
-  shadow-glow: "#{toRem(0px)} #{toRem(0px)} #{toRem(3px)} #00FF00, #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} #00FF00",
+  shadow-glow: "0px 0px #{toUnit(3px)} #00FF00, 0px 0px #{toUnit(10px)} #00FF00",
   text-glow: #00FF00,
   text-glow-bright: #33FF33,
-  background-in: "linear-gradient(145deg, #2b2b35, #3a3a45)",
   text-glow-brightest: #66FF66,
+  background-in: "linear-gradient(145deg, #2b2b35, #3a3a45)",
   background-out: "linear-gradient(145deg, #414151, #252534)",
-  shadow: "#{toRem(6px)} #{toRem(6px)} #{toRem(12px)} #1e1e28, #{toRem(-6px)} #{toRem(-6px)} #{toRem(12px)} #484858",
-  shadow-in: "inset #{toRem(6px)} #{toRem(6px)} #{toRem(12px)} #1e1e28, inset #{toRem(-6px)} #{toRem(-6px)} #{toRem(12px)} #484858"
+  shadow: "#{toUnit(6px)} #{toUnit(6px)} #{toUnit(12px)} #1e1e28, #{toUnit(-6px)} #{toUnit(-6px)} #{toUnit(12px)} #484858",
+  shadow-in: "inset #{toUnit(6px)} #{toUnit(6px)} #{toUnit(12px)} #1e1e28, inset #{toUnit(-6px)} #{toUnit(-6px)} #{toUnit(12px)} #484858"
 );
 
 $theme-neumorphic-light: (
@@ -21,14 +21,14 @@ $theme-neumorphic-light: (
   border-color: #d1d1d6,
   text-primary: rgb(30, 30, 31),
   text-secondary: #696969,  
-  shadow-glow: "#{toRem(0px)} #{toRem(0px)} #{toRem(3px)} #FF4500, #{toRem(0px)} #{toRem(0px)} #{toRem(10px)} #FF4500",
-  text-glow: #FF4500,
-  text-glow-bright: #FF6A00,
-  text-glow-brightest: #FF8800,
+  shadow-glow: "0px 0px #{toUnit(3px)} #FF5000, 0px 0px #{toUnit(10px)} #FF5000",
+  text-glow: #FF5000,
+  text-glow-bright:#FF7A00,
+  text-glow-brightest:#FFA500,
   background-in: "linear-gradient(145deg, #cacaca, #f0f0f0)",
   background-out: "linear-gradient(145deg, #f0f0f0, #cacaca)",  
-  shadow: "#{toRem(5px)} #{toRem(5px)} #{toRem(10px)} #bebebe, #{toRem(-5px)} #{toRem(-5px)} #{toRem(10px)} #ffffff",
-  shadow-in: "inset #{toRem(5px)} #{toRem(5px)} #{toRem(10px)} #bebebe, inset #{toRem(-5px)} #{toRem(-5px)} #{toRem(10px)} #ffffff"
+  shadow: "#{toUnit(6px)} #{toUnit(6px)} #{toUnit(12px)} #bebebe, #{toUnit(-6px)} #{toUnit(-6px)} #{toUnit(12px)} #ffffff",
+  shadow-in: "inset #{toUnit(6px)} #{toUnit(6px)} #{toUnit(12px)} #bebebe, inset #{toUnit(-6px)} #{toUnit(-6px)} #{toUnit(12px)} #ffffff"
 );
 
 $theme-flat-dark: (
@@ -47,27 +47,27 @@ $theme-flat-light: (
 
 
 $theme-root: (
-  spacing-xs: #{toRem(4px)},
-  spacing-sm: #{toRem(8px)},
-  spacing-md: #{toRem(16px)},
-  spacing-lg: #{toRem(24px)},
-  spacing-xl: #{toRem(32px)},
-  border-radius-sm: #{toRem(4px)},
-  border-radius-md: #{toRem(8px)},
-  border-radius-lg: #{toRem(16px)},
-  border-radius-xl: #{toRem(32px)},
-  font-size-xs: #{toRem(12px)},
-  font-size-sm: #{toRem(14px)},
-  font-size-md: #{toRem(16px)},
-  font-size-lg: #{toRem(18px)},
-  heading-sm: #{toRem(20px)},
-  heading-md: #{toRem(24px)},
-  heading-lg: #{toRem(32px)},
-  line-height-sm: #{toRem(20px)},
-  line-height-md: #{toRem(24px)},
-  line-height-lg: #{toRem(32px)},
-  line-height-xl: #{toRem(34px)},
-  backdrop-blur: #{toRem(12px)}
+  spacing-xs: #{toUnit(4px)},
+  spacing-sm: #{toUnit(8px)},
+  spacing-md: #{toUnit(16px)},
+  spacing-lg: #{toUnit(24px)},
+  spacing-xl: #{toUnit(32px)},
+  border-radius-sm: #{toUnit(4px)},
+  border-radius-md: #{toUnit(8px)},
+  border-radius-lg: #{toUnit(16px)},
+  border-radius-xl: #{toUnit(32px)},
+  font-size-xs: #{toUnit(12px)},
+  font-size-sm: #{toUnit(14px)},
+  font-size-md: #{toUnit(16px)},
+  font-size-lg: #{toUnit(18px)},
+  heading-sm: #{toUnit(20px)},
+  heading-md: #{toUnit(24px)},
+  heading-lg: #{toUnit(32px)},
+  line-height-sm: #{toUnit(20px)},
+  line-height-md: #{toUnit(24px)},
+  line-height-lg: #{toUnit(32px)},
+  line-height-xl: #{toUnit(34px)},
+  backdrop-blur: #{toUnit(12px)}
 );
 
 

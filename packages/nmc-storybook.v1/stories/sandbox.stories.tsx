@@ -18,33 +18,33 @@ export const Sandbox: StoryFn = (args, context) => {
     {
       title: 'Spacing',
       variables: [
-        { name: 'spacing-xs', type: 'square' },
-        { name: 'spacing-sm', type: 'square' },
-        { name: 'spacing-md', type: 'square' },
-        { name: 'spacing-lg', type: 'square' },
-        { name: 'spacing-xl', type: 'square' },
+        { name: 'spacing-xs', type: 'square', value: '4px'},
+        { name: 'spacing-sm', type: 'square', value: '8px'},
+        { name: 'spacing-md', type: 'square', value: '16px'},
+        { name: 'spacing-lg', type: 'square', value: '24px'},
+        { name: 'spacing-xl', type: 'square', value: '32px'},
       ]
     },
     {
       title: 'Border Radius',
       variables: [
-        { name: 'border-radius-sm', type: 'radius' },
-        { name: 'border-radius-md', type: 'radius' },
-        { name: 'border-radius-lg', type: 'radius' },
-        { name: 'border-radius-xl', type: 'radius' },
+        { name: 'border-radius-sm', type: 'radius', value: '4px' },
+        { name: 'border-radius-md', type: 'radius', value: '8px' },
+        { name: 'border-radius-lg', type: 'radius', value: '16px' },
+        { name: 'border-radius-xl', type: 'radius', value: '32px' },
       ]
     },
     {
       title: 'Typography',
       grid: 'typography',
       variables: [
-        { name: 'font-size-xs', type: 'font', text: 'Text XS' },
-        { name: 'font-size-sm', type: 'font', text: 'Text SM' },
-        { name: 'font-size-md', type: 'font', text: 'Text MD' },
-        { name: 'font-size-lg', type: 'font', text: 'Text LG' },
-        { name: 'heading-sm', type: 'font', text: 'Heading SM' },
-        { name: 'heading-md', type: 'font', text: 'Heading MD' },
-        { name: 'heading-lg', type: 'font', text: 'Heading LG' },
+        { name: 'font-size-xs', type: 'font', text: 'Text XS', value: '12px' },
+        { name: 'font-size-sm', type: 'font', text: 'Text SM' , value: '14px'},
+        { name: 'font-size-md', type: 'font', text: 'Text MD' , value: '16px'},
+        { name: 'font-size-lg', type: 'font', text: 'Text LG' , value: '18px'},
+        { name: 'heading-sm', type: 'font', text: 'Heading SM' , value: '20px'},
+        { name: 'heading-md', type: 'font', text: 'Heading MD' , value: '24px'},
+        { name: 'heading-lg', type: 'font', text: 'Heading LG' , value: '32px'},
       ]
     },
     {
@@ -180,7 +180,7 @@ export const Sandbox: StoryFn = (args, context) => {
               {category.variables.map((variable) => (
                 <div key={variable.name} className={styles.variable}>
                   {renderVariablePreview(variable)}
-                  <code>--{variable.name}</code>
+                  <code>--{variable.name} <span>{variable.value}</span></code>
                 </div>
               ))}
             </div>

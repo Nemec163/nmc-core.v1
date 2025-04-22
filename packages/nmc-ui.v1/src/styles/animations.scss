@@ -1,4 +1,4 @@
-@use './tools/toRem' as *;
+@use './tools/toUnit' as *;
 
 @keyframes rotation {
   0% { transform: rotate(0deg); }
@@ -17,45 +17,46 @@
 
 @keyframes text-glow-animation {
   0%, 100% {
+    text-shadow:
+      toUnit(-2px) toUnit(-2px) toUnit(5px) var(--animation-glow-base),
+      toUnit(3px) toUnit(3px) toUnit(15px) var(--animation-glow-base);
     opacity: 1;
-    text-shadow:
-      #{toRem(0)} #{toRem(0)} #{toRem(4px)} var(--animation-glow-base),
-      #{toRem(0)} #{toRem(0)} #{toRem(12px)} var(--animation-glow-base);
-    filter: drop-shadow(0 0 #{toRem(2px)} var(--animation-glow-base));
-    animation-timing-function: ease-in-out;
   }
-  25% {
+  20% {
+    text-shadow:
+      toUnit(-1px) toUnit(-1px) toUnit(7px) var(--animation-glow-mid),
+      toUnit(2px) toUnit(2px)  toUnit(18px) var(--animation-glow-mid);
+    opacity: 0.95;
+  }
+  40% {
+    text-shadow:
+      toUnit(-3px) toUnit(-3px) toUnit(6px) var(--animation-glow-base),
+      toUnit(4px) toUnit(4px) toUnit(20px) var(--animation-glow-base);
     opacity: 0.9;
-    text-shadow:
-      #{toRem(0)} #{toRem(0)} #{toRem(6px)} var(--animation-glow-mid),
-      #{toRem(0)} #{toRem(0)} #{toRem(18px)} var(--animation-glow-mid);
-    filter: drop-shadow(0 0 #{toRem(4px)} var(--animation-glow-mid));
   }
-  50% {
-    opacity: 1;
+  60% {
     text-shadow:
-      #{toRem(0)} #{toRem(0)} #{toRem(8px)} var(--animation-glow-bright),
-      #{toRem(0)} #{toRem(0)} #{toRem(20px)} var(--animation-glow-bright);
-    filter: drop-shadow(0 0 #{toRem(6px)} var(--animation-glow-bright));
+      0px 0px toUnit(8px) var(--animation-glow-bright),
+      0px 0px toUnit(22px) var(--animation-glow-bright);
+    opacity: 0.93;
   }
-  75% {
-    opacity: 0.9;
+  80% {
     text-shadow:
-      #{toRem(0)} #{toRem(0)} #{toRem(6px)} var(--animation-glow-mid),
-      #{toRem(0)} #{toRem(0)} #{toRem(18px)} var(--animation-glow-mid);
-    filter: drop-shadow(0 0 #{toRem(4px)} var(--animation-glow-mid));
+      toUnit(1px) toUnit(1px) toUnit(10px) var(--animation-glow-mid),
+      toUnit(1px) toUnit(1px) toUnit(30px) var(--animation-glow-mid);
+    opacity: 0.97;
   }
 }
 
 @keyframes element-glow-animation {
   0%, 100% {
-    filter: drop-shadow(#{toRem(0px)} #{toRem(0px)} #{toRem(5px)} var(--animation-glow-base));
+    filter: drop-shadow(0px 0px #{toUnit(5px)} var(--animation-glow-base));
   }
-  10% { filter: drop-shadow(#{toRem(-2px)} #{toRem(-2px)} #{toRem(8px)} var(--animation-glow-mid)); }
-  30% { filter: drop-shadow(#{toRem(2px)} #{toRem(2px)} #{toRem(6px)} var(--animation-glow-mid)); }
-  50% { filter: drop-shadow(#{toRem(0px)} #{toRem(0px)} #{toRem(10px)} var(--animation-glow-bright)); }
-  70% { filter: drop-shadow(#{toRem(1px)} #{toRem(1px)} #{toRem(7px)} var(--animation-glow-base)); }
-  90% { filter: drop-shadow(#{toRem(-1px)} #{toRem(1px)} #{toRem(9px)} var(--animation-glow-mid)); }
+  10% { filter: drop-shadow(#{toUnit(-2px)} #{toUnit(-2px)} #{toUnit(8px)} var(--animation-glow-mid)); }
+  30% { filter: drop-shadow(#{toUnit(2px)} #{toUnit(2px)} #{toUnit(6px)} var(--animation-glow-mid)); }
+  50% { filter: drop-shadow(0px 0px #{toUnit(10px)} var(--animation-glow-bright)); }
+  70% { filter: drop-shadow(#{toUnit(1px)} #{toUnit(1px)} #{toUnit(7px)} var(--animation-glow-base)); }
+  90% { filter: drop-shadow(#{toUnit(-1px)} #{toUnit(1px)} #{toUnit(9px)} var(--animation-glow-mid)); }
 }
 
 @mixin rotate($duration: 1s, $timing-function: linear) {
@@ -70,9 +71,12 @@
   animation: blink $duration infinite;
 }
 
-@mixin glow-text($duration: 3s, $timing-function: ease-in-out) {
-  animation: text-glow-animation $duration $timing-function infinite;
+@mixin glow-text($duration: 5s, $timing-function: cubic-bezier(0.65, 0.05, 0.36, 1)) {
+  $delay: random(500) * 1ms;
+  animation: text-glow-animation $duration $timing-function infinite both;
+  animation-delay: $delay;
 }
+
 
 @mixin glow-element($duration: 3s, $timing-function: ease-in-out) {
   animation: element-glow-animation $duration $timing-function infinite;

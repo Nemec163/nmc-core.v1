@@ -1,4 +1,6 @@
 $useRem: true !default;
-$baseFontSize: 14.4 !default;
-$breakpoint-mobile: 768px !default;
-$breakpoint-desktop: 1440px !default;
+$baseFontSize: 16px !default;
+
+$breakpoint-mobile: 640 !default;
+$breakpoint-tablet: 1024 !default;
+$breakpoint-desktop: 1600 !default;

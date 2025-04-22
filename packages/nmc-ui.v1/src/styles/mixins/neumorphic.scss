@@ -1,4 +1,4 @@
-@use '../tools/toRem.scss' as *;
+@use '../tools/toUnit.scss' as *;
 @use '../animations' as *;
 
 @mixin neumorphic-flat {
@@ -42,7 +42,7 @@
 }
 
 @mixin element-glow($animate: true, $intensity: 3px) {
-  filter: drop-shadow(toRem(0) toRem(0) toRem($intensity) var(--text-glow));
+  filter: drop-shadow(0px 0px toUnit($intensity) var(--text-glow));
   
   @if $animate {
     @include setup-glow-variables;

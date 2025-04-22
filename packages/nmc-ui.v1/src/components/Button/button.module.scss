@@ -61,7 +61,6 @@
     @include neumorphic-out;
 
     &:hover {
-      @include neumorphic-in-out;
       opacity: 1;
     }
     
