@@ -1,3 +1,2 @@
-import './styles/index.scss';
 export * from './components/Button';
 export { ThemeProvider } from './providers/ThemeProvider';

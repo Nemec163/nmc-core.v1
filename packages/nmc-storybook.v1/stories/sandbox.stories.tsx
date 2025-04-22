@@ -1,9 +1,20 @@
+// import '../themes/anime.scss';
+// import '../themes/black-metal.scss';
+// import '../themes/blackmirror-light.scss';
+// import '../themes/cozy.scss';
+// import '../themes/cyberpunk.scss'
+// import '../themes/nightwave.scss';
+// import '../themes/pink.scss';
+// import '../themes/purple-yellow.scss';
+// import '../themes/vampire.scss';
+// import '../themes/spacecraft.scss';
+
 import '@nmc/ui/styles/index.scss';
+import { Button, ThemeProvider } from '@nmc/ui/index';
 import styles from './sandbox.module.scss';
 
 import React from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
-import { Button, ThemeProvider } from '@nmc/ui/index';
 
 const meta: Meta = {
   title: 'DEV/Sandbox'
