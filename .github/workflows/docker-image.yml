@@ -26,7 +26,7 @@ jobs:
         run: pnpm --filter nmc-storybook.v1 run build
 
       - name: Sync Storybook to server
-        uses: burnett01/rsync-deploy@v3
+        uses: Burnett01/rsync-deployments@7.0.2
         with:
           switches: -az --delete --chmod=Du=rwx,Fu=rw,go=rx
           path: packages/nmc-storybook.v1/storybook-static/
