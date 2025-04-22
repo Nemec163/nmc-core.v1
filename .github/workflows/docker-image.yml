@@ -19,7 +19,6 @@ jobs:
         with:
           version: latest
 
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -31,15 +30,16 @@ jobs:
         with:
           switches: -az --delete --chmod=Du=rwx,Fu=rw,go=rx
           path: packages/nmc-storybook.v1/storybook-static/
-          remote_host: ${{ secrets.SERVER_HOST }}
+          remote_host: ${{ secrets.SERVER_IP }}
           remote_user: ${{ secrets.SERVER_USER }}
-          remote_key: ${{ secrets.SERVER_SSH_KEY }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
           remote_path: /var/www/storybook/
 
       - name: Reload nginx
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
+          host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: sudo systemctl reload nginx
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo systemctl reload nginx

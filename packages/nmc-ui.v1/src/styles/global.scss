@@ -73,23 +73,26 @@
 
 @if $useRem {
   * {
-    font-size:  1vw;
+    font-size: 1vw;
   }
-  
+
   @media screen and (min-width: #{$breakpoint-desktop}px) {
     * {
       font-size: $baseFontSize;
     }
   }
+
   @media screen and (max-width: #{$breakpoint-tablet}px) {
     * {
-      font-size: #{$breakpoint-desktop / $breakpoint-tablet}vw;
+      font-size: math.div($breakpoint-desktop, $breakpoint-tablet) * 1vw;
     }
   }
+
   @media screen and (max-width: #{$breakpoint-mobile}px) {
     * {
-      font-size: #{$breakpoint-desktop / 375}vw;
+      font-size: math.div($breakpoint-desktop, 375) * 1vw;
     }
   }
 }
+
 
