@@ -1,42 +1,44 @@
-name: Deploy to Server (No Docker Hub)
+# .github/workflows/deploy-storybook.yml
+name: Deploy Storybook
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  deploy:
+  build-and-deploy-storybook:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Connect & Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
         with:
-          host: ${{ secrets.SERVER_IP }}
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Storybook
+        run: pnpm --filter nmc-storybook.v1 run build
+
+      - name: Sync Storybook to server
+        uses: burnett01/rsync-deploy@v3
+        with:
+          switches: -az --delete --chmod=Du=rwx,Fu=rw,go=rx
+          path: packages/nmc-storybook.v1/storybook-static/
+          remote_host: ${{ secrets.SERVER_HOST }}
+          remote_user: ${{ secrets.SERVER_USER }}
+          remote_key: ${{ secrets.SERVER_SSH_KEY }}
+          remote_path: /var/www/storybook/
+
+      - name: Reload nginx
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /root/nmc-core.v1 || git clone https://github.com/Nemec163/nmc-core.v1.git && cd nmc-core.v1
-            git pull origin main
-
-            echo "🔁 Installing pnpm and building Storybook static files..."
-            corepack enable
-            corepack prepare pnpm@latest --activate
-            pnpm install --frozen-lockfile
-            pnpm --filter nmc-storybook.v1 build
-
-            echo "🔁 Building and restarting Docker containers..."
-            docker rm -f nmc-site   || true
-            docker rm -f nmc-server || true
-            docker rm -f nmc-ui     || true
-
-            docker build -t nmc-site   ./apps/nmc-site.v1
-            docker build -t nmc-server ./apps/nmc-server.v1
-            docker build -t nmc-ui     ./packages/nmc-ui.v1
-
-            docker run -d --name nmc-site   -p 3000:3000 nmc-site
-            docker run -d --name nmc-server -p 3001:3000 nmc-server
-            docker run -d --name nmc-ui     -p 6006:6006 nmc-ui
-
-            echo "🔁 Restarting nginx..."
-            systemctl restart nginx
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: sudo systemctl reload nginx
