@@ -1,6 +1,5 @@
 // import '../themes/anime.scss';
 // import '../themes/black-metal.scss';
-// import '../themes/blackmirror-light.scss';
 // import '../themes/cozy.scss';
 // import '../themes/cyberpunk.scss'
 // import '../themes/nightwave.scss';
@@ -8,6 +7,7 @@
 // import '../themes/purple-yellow.scss';
 // import '../themes/vampire.scss';
 // import '../themes/spacecraft.scss';
+// import '../themes/matrix.scss';
 
 import '@nmc/ui/styles/index.scss';
 import { Button, ThemeProvider } from '@nmc/ui/index';

@@ -1,0 +1,26 @@
+// Matrix theme for NMC UI
+
+@use "../../nmc-ui.v1/src/styles/index" as ui with (
+  $useRem: false,
+  $baseFontSize: 16px,
+  $breakpoint-mobile: 640px,
+  $breakpoint-tablet: 1024px,
+  $breakpoint-desktop: 1600px
+);
+
+$custom-colors: (
+  background: #0a0a0a,
+  border-color: #003300,
+  text-primary: #00ff00,
+  text-secondary: #009900,
+  shadow-glow: "0px 0px #{ui.toUnit(2px)} #00ff00, 0px 0px #{ui.toUnit(6px)} #00ff00",
+  text-glow: #00ff00,
+  text-glow-bright: #66ff66,
+  text-glow-brightest: #ccffcc,
+  background-in:  "linear-gradient(145deg, #001100, #002200)",
+  background-out: "linear-gradient(145deg, #002200, #001100)",
+  shadow: "#{ui.toUnit(6px)} #{ui.toUnit(6px)} #{ui.toUnit(12px)} rgba(0, 0, 0, 0.4), #{ui.toUnit(-6px)} #{ui.toUnit(-6px)} #{ui.toUnit(12px)} rgba(0, 255, 0, 0.2)",
+  shadow-in: "inset #{ui.toUnit(6px)} #{ui.toUnit(6px)} #{ui.toUnit(12px)} rgba(0, 0, 0, 0.4), inset #{ui.toUnit(-6px)} #{ui.toUnit(-6px)} #{ui.toUnit(12px)} rgba(0, 255, 0, 0.2)"
+);
+
+@include ui.apply-theme-vars($custom-colors, ".my-app.nmc-ui");
