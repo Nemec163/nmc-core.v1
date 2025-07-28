@@ -1,0 +1,14 @@
+# syntax=docker/dockerfile:1.7-labs
+# Security scanning and vulnerability check stage
+FROM aquasec/trivy:latest AS security-scanner
+
+# Copy built images for scanning
+ARG IMAGE_NAME
+ARG IMAGE_TAG=latest
+
+# Run security scan
+RUN trivy image --severity HIGH,CRITICAL --no-progress --format json --output /scan-results.json ${IMAGE_NAME}:${IMAGE_TAG} || true
+
+# Export scan results
+FROM scratch AS scan-export
+COPY --from=security-scanner /scan-results.json /scan-results.json

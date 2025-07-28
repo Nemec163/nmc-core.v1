@@ -1,0 +1,36 @@
+# BuildKit configuration for optimized builds
+# Enable experimental features for enhanced caching and performance
+
+[worker.oci]
+enabled = true
+# Use registry cache for cross-build sharing
+registry = "registry:5000"
+
+[worker.containerd] 
+enabled = true
+
+# Cache configuration
+[cache]
+# Enable inline cache
+inline = true
+# Registry cache for distributed builds
+registry = "type=registry,ref=registry:5000/buildcache"
+
+# Security settings
+[security]
+# Enable security scanning integration
+scan = true
+# SBOM generation
+sbom = true
+
+# Optimization settings
+[frontend.dockerfile.v0]
+# Enable experimental features
+experimental = true
+# Layer compression
+compression = "zstd"
+
+# Network settings for dependency downloading
+[network]
+# Use host network for faster downloads during build
+mode = "host"

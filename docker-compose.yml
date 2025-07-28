@@ -30,48 +30,107 @@ services:
     build:
       context: .
       dockerfile: apps/nmc-site.v1/Dockerfile
+      # Enable BuildKit optimizations
+      cache_from:
+        - nmc-site:latest
+        - localhost:5000/nmc/cache:site-deps
+        - localhost:5000/nmc/cache:site-build
+      # Build arguments for optimization
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: nmc-site:latest
     container_name: nmc-site
     expose:
       - "3000"
     networks:
       - nmc-network
     restart: unless-stopped
+    # Security: Read-only root filesystem
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 120s
+      start_period: 60s
 
   nmc-server:
     build:
       context: .
       dockerfile: apps/nmc-server.v1/Dockerfile
+      # Enable BuildKit optimizations
+      cache_from:
+        - nmc-server:latest
+        - localhost:5000/nmc/cache:server-deps
+        - localhost:5000/nmc/cache:server-build
+      # Build arguments for optimization
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: nmc-server:latest
+    image: nmc-server:latest
     container_name: nmc-server
     expose:
       - "3001"
     networks:
       - nmc-network
     restart: unless-stopped
+    # Security: Read-only root filesystem
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 120s
+      start_period: 60s
 
   nmc-storybook:
     build:
       context: .
       dockerfile: packages/nmc-storybook.v1/Dockerfile
       target: export
+      # Enable BuildKit optimizations
+      cache_from:
+        - localhost:5000/nmc/cache:storybook-deps
+        - localhost:5000/nmc/cache:storybook-build
+      # Build arguments for optimization
+      args:
+        - BUILDKIT_INLINE_CACHE=1
     container_name: nmc-storybook-builder
     volumes:
       - storybook-static:/output
     command: ['sh', '-c', 'cp -r /storybook-static/* /output/ && echo "Storybook build completed"']
 
+  # Local registry for BuildKit cache (development)
+  registry:
+    image: registry:2
+    container_name: nmc-registry
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry-data:/var/lib/registry
+    restart: unless-stopped
+    profiles:
+      - development
+
 volumes:
   storybook-static:
+  registry-data:
 
 networks:
   nmc-network:
