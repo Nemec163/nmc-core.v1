@@ -35,11 +35,43 @@ jobs:
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
           remote_path: /var/www/storybook/
 
-      - name: Reload nginx
+      - name: Deploy and restart services
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/nmc-core.v1 && docker-compose exec -T nginx nginx -s reload
+            cd ~/nmc-core.v1
+            echo "Pulling latest changes..."
+            git pull origin main
+            
+            echo "Stopping existing services..."
+            docker-compose down --remove-orphans
+            
+            echo "Removing old images..."
+            docker image prune -f
+            
+            echo "Starting services..."
+            docker-compose up -d --build
+            
+            echo "Waiting for services to be healthy..."
+            timeout=60
+            while [ $timeout -gt 0 ]; do
+              if docker-compose ps | grep -q "healthy"; then
+                echo "Services are healthy!"
+                break
+              fi
+              echo "Waiting for services to start... ($timeout seconds remaining)"
+              sleep 5
+              timeout=$((timeout-5))
+            done
+            
+            if [ $timeout -le 0 ]; then
+              echo "Services failed to start within timeout"
+              docker-compose logs
+              exit 1
+            fi
+            
+            echo "Deployment completed successfully!"
+            docker-compose ps

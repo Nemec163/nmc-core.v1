@@ -26,8 +26,8 @@ services:
 
   nmc-site:
     build:
-      context: ./apps/nmc-site.v1
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/nmc-site.v1/Dockerfile
     container_name: nmc-site
     expose:
       - "3000"
@@ -38,12 +38,13 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
+      start_period: 60s
 
   nmc-server:
     build:
-      context: ./apps/nmc-server.v1
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/nmc-server.v1/Dockerfile
     container_name: nmc-server
     expose:
       - "3001"
@@ -54,7 +55,8 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
+      start_period: 60s
 
 networks:
   nmc-network:
