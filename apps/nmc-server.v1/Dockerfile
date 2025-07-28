@@ -64,7 +64,6 @@ RUN --mount=type=cache,target=/pnpm-cache,uid=1001,gid=1001 \
 FROM build-base AS build
 # Copy dependencies from deps stage
 COPY --from=deps --chown=appuser:appgroup /app/node_modules ./node_modules
-COPY --from=deps --chown=appuser:appgroup /app/apps/nmc-server.v1/node_modules ./apps/nmc-server.v1/node_modules
 
 # Copy source files for build
 COPY --chown=appuser:appgroup apps/nmc-server.v1/ ./apps/nmc-server.v1/
