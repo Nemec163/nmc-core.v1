@@ -24,6 +24,8 @@ const config: StorybookConfig = {
       '@nmc-ui.v1/src': path.resolve(__dirname, '../../../packages/nmc-ui.v1/src')
     };
 
+    config.base = '/ui/';
+
     return config;
   }
 };

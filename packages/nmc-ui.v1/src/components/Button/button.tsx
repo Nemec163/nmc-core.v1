@@ -36,7 +36,7 @@ const Button = ({
   href,
   target,
   disabled = false,
-  loading = true,
+  loading = false,
   className = '',
   submit = false,
   form,
