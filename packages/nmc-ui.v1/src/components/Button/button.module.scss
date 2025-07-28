@@ -1,41 +1,36 @@
 @use '../../styles/mixins/neumorphic' as *;
+@use '../../styles/animations.scss' as *;
 
-.component {  
-  display: flex;
+.component {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--spacing-small);
   user-select: none;
   white-space: nowrap;
   background: var(--background);
   color: var(--text-primary);
+  transition: opacity .2s, box-shadow .2s;
+
+  &:hover,
+  &:focus-visible {
+    cursor: pointer;
+    opacity: .8;
+  }
 
   &.active {
     color: var(--text-secondary);
   }
-  
-  .prefix {
-    margin: 0 var(--spacing-small) 0 0;
-  }
-
-  .suffix {
-    margin: 0 0 0 var(--spacing-small);
-  }
-
-  &:hover {
-    cursor: pointer;
-    transition: opacity .5s;
-    opacity: .8;
-  }
 
   &.disabled {
     opacity: .6;
-    cursor: auto;
+    cursor: default;
     pointer-events: none;
   }
 
   &.sm {
-    font-size: var(--font-size-md);
-    line-height: var(--line-height-md);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
     padding: calc(var(--spacing-sm) / 2) var(--spacing-sm);
     border-radius: var(--border-radius-sm);
   }
@@ -48,26 +43,54 @@
   }
 
   &.lg {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-lg);
     line-height: var(--line-height-lg);
     padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--border-radius-lg);
   }
+
+  .prefix {
+    display: inline-flex;
+    align-items: center;
+    margin-right: var(--spacing-small);
+  }
+
+  .suffix {
+    display: inline-flex;
+    align-items: center;
+    margin-left: var(--spacing-small);
+  }
+
+  .label {
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
+  }
+
+  .loader{
+    // @include rotate(2s);
+    // stroke: var(--text-primary);
+  }
 }
 
-:global(.nmc-ui) {
-  &:not(:global(.flat-light)):not(:global(.flat-dark)) {
-    .component {
-      @include neumorphic-out;
+:global(.nmc-ui):not(:global(.flat-light)):not(:global(.flat-dark)) {
+  .component {
+    @include neumorphic-out;
 
-      &:hover {
-        opacity: 1;
-      }
+    &:hover {
+      opacity: 1;
+    }
 
-      &.active {
-        @include neumorphic-in;
-        @include text-glow(false);
-      }
+    &.active {
+      @include neumorphic-in;
+      @include text-glow(false);
+    }
+
+    &.disabled {
+      @include neumorphic-flat;
+    }
+
+    .loader{
     }
   }
 }

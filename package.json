@@ -11,6 +11,7 @@
     "dev:site": "pnpm --filter nmc-site.v1 dev",
     "dev:server": "pnpm --filter nmc-server.v1 dev",
     "dev:storybook": "pnpm --filter nmc-storybook.v1 dev",
+    "build:storybook": "pnpm --filter nmc-storybook.v1 build",
     "build": "turbo run build",
     "lint": "turbo run lint"
   },

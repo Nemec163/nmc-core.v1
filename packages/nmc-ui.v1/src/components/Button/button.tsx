@@ -1,68 +1,106 @@
+import React, {
+  ReactNode,
+  MouseEvent,
+  cloneElement,
+  isValidElement,
+  ReactElement,
+} from 'react';
 import styles from './button.module.scss';
+import { Icon } from '../Icon';
 
-import React, { ReactNode } from 'react';
-
-interface ButtonProps{
-  children?: any;
-  onClick?: (e: any) => void;
+interface ButtonProps {
+  children?: ReactNode;
+  onClick?: (e: MouseEvent) => void;
   prefix?: ReactNode;
   suffix?: ReactNode;
-  template?: string;
-  size?: string;
+  template?: 'red' | 'blue' | 'green';
+  size?: 'sm' | 'md' | 'lg';
   href?: string;
   target?: string;
   disabled?: boolean;
   loading?: boolean;
   className?: string;
-  type?: string;
   submit?: boolean;
   form?: string;
   isActive?: boolean;
+  asChild?: boolean;
 }
 
 const Button = ({
-  children, 
-  onClick, 
-  prefix, 
+  children,
+  onClick,
+  prefix,
   suffix,
   template = 'red',
   size = 'md',
-  href, 
-  target, 
-  disabled,
-  loading,
-  className,
-  type,
-  submit,
+  href,
+  target,
+  disabled = false,
+  loading = true,
+  className = '',
+  submit = false,
   form,
-  isActive
+  isActive = false,
+  asChild = false,
 }: ButtonProps) => {
+  const handlePointerDown = (e: MouseEvent) => {
+    if (!disabled && !loading) e.currentTarget.classList.add(styles.active);
+  };
 
-  const handleMouseDown = (e: React.MouseEvent) => {if (!disabled && !loading) e.currentTarget.classList.add(styles.active)};
-  const handleMouseUp = (e: React.MouseEvent) => e.currentTarget.classList.remove(styles.active);
+  const handlePointerUp = (e: MouseEvent) => {
+    e.currentTarget.classList.remove(styles.active);
+  };
 
-  const params = {
+  const classes = [
+    styles.component,
+    styles.glow,
+    styles[template],
+    styles[size],
+    isActive && styles.active,
+    disabled && styles.disabled,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const sharedProps: { [key: string]: any } = {
+    className: classes,
     onClick: disabled || loading ? undefined : onClick,
-    onPointerDown: handleMouseDown,
-    onPointerUp: handleMouseUp,
-    onPointerCancel: handleMouseUp,
-    className: `${styles.glow} ${styles.component} ${template ? styles[template] : ''} ${size ? styles[size] : ''} ${isActive ? styles.active : ''} ${disabled ? styles.disabled : ''} ${className ? className : ''}`,
+    onPointerDown: handlePointerDown,
+    onPointerUp: handlePointerUp,
+    onPointerCancel: handlePointerUp,
+    'aria-busy': loading || undefined,
+    'aria-disabled': disabled || loading || undefined,
+    target,
     href: disabled || loading ? undefined : href,
-    form
-  }
+    form,
+  };
 
-  const content = (
+  // контент: если loading — показываем иконку-лоадер, иначе префикс/текст/суффикс
+  const content = loading ? (
+    <Icon name="RefreshCcw" className={styles.loader} />
+  ) : (
     <>
-      {prefix && <div className={styles.prefix}>{prefix}</div>}
-      {children}
-      {suffix && <div className={styles.suffix}>{suffix}</div>}
+      {prefix && <span className={styles.prefix}>{prefix}</span>}
+      <span className={styles.label}>{children}</span>
+      {suffix && <span className={styles.suffix}>{suffix}</span>}
     </>
   );
 
-  if (type === 'external' || (href && onClick)) return <a {...params}>{content}</a>;
-  if (target) return <a target={target} {...params}>{content}</a>;
-  // if (href && !onClick) return <Link href={params.href as string} className={params.className}>{content}</Link>;
-  return <button type={submit ? 'submit' : 'button'} {...params}>{content}</button>;
+  if (asChild && isValidElement(children)) {
+    const child = children as ReactElement<any>;
+    return cloneElement(child, {
+      ...sharedProps,
+      className: [child.props.className, classes].filter(Boolean).join(' '),
+      children: content,
+    });
+  }
+
+  const Tag = href ? 'a' : 'button';
+  const tagProps: { [key: string]: any } = { ...sharedProps };
+  if (Tag === 'button') tagProps.type = submit ? 'submit' : 'button';
+
+  return <Tag {...tagProps}>{content}</Tag>;
 };
 
 export default Button;

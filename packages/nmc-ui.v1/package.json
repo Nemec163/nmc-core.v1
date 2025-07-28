@@ -16,7 +16,9 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["dist/*"]
+      "*": [
+        "dist/*"
+      ]
     }
   },
   "files": [
@@ -39,9 +41,9 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "esbuild": "^0.20.0",
+    "rimraf": "^5.0.0",
     "sass": "^1.86.3",
-    "typescript": "^5.8.3",
-    "rimraf": "^5.0.0"
+    "typescript": "^5.8.3"
   },
   "publishConfig": {
     "access": "public"
@@ -53,5 +55,13 @@
   },
   "author": "NMC",
   "license": "MIT",
-  "keywords": ["ui", "components", "react", "nmc"]
+  "keywords": [
+    "ui",
+    "components",
+    "react",
+    "nmc"
+  ],
+  "dependencies": {
+    "lucide-react": "^0.503.0"
+  }
 }

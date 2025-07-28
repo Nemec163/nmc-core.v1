@@ -2,7 +2,6 @@
 @use '../../nmc-ui.v1/src/styles/animations' as animations;
 @use '../../nmc-ui.v1/src/styles/mixins/neumorphic' as neumorphic;
 
-
 :global(.nmc-ui) {
   &:not(:global(.flat-light)):not(:global(.flat-dark)) {
     background-color: var(--background);
