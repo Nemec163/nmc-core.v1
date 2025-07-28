@@ -12,29 +12,49 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
     networks:
       - nmc-network
+    depends_on:
+      nmc-site:
+        condition: service_healthy
+      nmc-server:
+        condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   nmc-site:
     build:
       context: ./apps/nmc-site.v1
       dockerfile: Dockerfile
     container_name: nmc-site
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     networks:
       - nmc-network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   nmc-server:
     build:
       context: ./apps/nmc-server.v1
       dockerfile: Dockerfile
     container_name: nmc-server
-    ports:
-      - "3001:3001"
+    expose:
+      - "3001"
     networks:
       - nmc-network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 networks:
   nmc-network:

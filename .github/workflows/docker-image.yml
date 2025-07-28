@@ -42,4 +42,4 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/nmc-core.v1 && docker compose restart nginx
+            cd ~/nmc-core.v1 && docker-compose exec -T nginx nginx -s reload
