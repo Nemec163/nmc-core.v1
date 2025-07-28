@@ -5,13 +5,13 @@ FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/package.json
-RUN pnpm install --frozen-lockfile --filter nmc-server.v1
+RUN pnpm install --frozen-lockfile --filter nmc-server.v1 || (rm -rf node_modules && pnpm install --filter nmc-server.v1)
 
 FROM base AS build
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/package.json
-RUN pnpm install --frozen-lockfile --filter nmc-server.v1
+RUN pnpm install --frozen-lockfile --filter nmc-server.v1 || (rm -rf node_modules && pnpm install --filter nmc-server.v1)
 COPY . .
 RUN pnpm --filter nmc-server.v1 build
 
@@ -21,11 +21,16 @@ RUN apk add --no-cache curl
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nestjs
 
+# Copy package files first
+COPY --from=build --chown=nestjs:nodejs /app/package.json ./package.json
+COPY --from=build --chown=nestjs:nodejs /app/apps/nmc-server.v1/package.json ./apps/nmc-server.v1/package.json
+
+# Copy dependencies
 COPY --from=deps --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=deps --chown=nestjs:nodejs /app/apps/nmc-server.v1/node_modules ./apps/nmc-server.v1/node_modules
+
+# Copy built application
 COPY --from=build --chown=nestjs:nodejs /app/apps/nmc-server.v1/dist ./apps/nmc-server.v1/dist
-COPY --from=build --chown=nestjs:nodejs /app/apps/nmc-server.v1/package.json ./apps/nmc-server.v1/package.json
-COPY --from=build --chown=nestjs:nodejs /app/package.json ./package.json
 
 WORKDIR /app/apps/nmc-server.v1
 USER nestjs
