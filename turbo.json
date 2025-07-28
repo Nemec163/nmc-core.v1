@@ -1,14 +1,145 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "dev": {
-      "dependsOn": ["^dev"],
-      "outputs": [],
-      "cache": false
-    },
+  "ui": "tui",
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "inputs": [
+        "src/**",
+        "public/**",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.build.json",
+        "next.config.ts",
+        "nest-cli.json",
+        "vite.config.ts",
+        "build.js"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "storybook-static/**"
+      ],
+      "cache": true,
+      "persistent": false
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**",
+        "public/**",
+        "stories/**",
+        "package.json",
+        "tsconfig.json",
+        "next.config.ts",
+        "nest-cli.json",
+        "vite.config.ts"
+      ],
+      "outputs": [],
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**",
+        "test/**",
+        "stories/**",
+        "package.json",
+        "tsconfig.json",
+        "eslint.config.mjs",
+        ".eslintrc.json"
+      ],
+      "outputs": [],
+      "cache": true,
+      "persistent": false
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**",
+        "test/**",
+        "package.json",
+        "tsconfig.json",
+        "jest.config.js",
+        "jest-e2e.json"
+      ],
+      "outputs": [
+        "coverage/**"
+      ],
+      "cache": true,
+      "persistent": false
+    },
+    "test:watch": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**",
+        "test/**",
+        "package.json",
+        "tsconfig.json",
+        "jest.config.js"
+      ],
+      "outputs": [],
+      "cache": false,
+      "persistent": true
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "inputs": [
+        "src/**",
+        "test/**",
+        "package.json",
+        "tsconfig.json",
+        "jest-e2e.json"
+      ],
+      "outputs": [],
+      "cache": true,
+      "persistent": false
+    },
+    "clean": {
+      "inputs": [],
+      "outputs": [],
+      "cache": false,
+      "persistent": false
+    },
+    "format": {
+      "inputs": [
+        "src/**",
+        "test/**",
+        "package.json",
+        ".prettierrc*",
+        "prettier.config.*"
+      ],
+      "outputs": [],
+      "cache": true,
+      "persistent": false
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**",
+        "test/**",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.build.json"
+      ],
+      "outputs": [],
+      "cache": true,
+      "persistent": false
     }
-  }
+  },
+  "globalDependencies": [
+    ".env",
+    ".env.local",
+    ".env.production",
+    ".env.development",
+    "docker-compose.yml",
+    "Dockerfile"
+  ],
+  "globalEnv": [
+    "NODE_ENV",
+    "TURBO_TEAM",
+    "TURBO_TOKEN"
+  ]
 }

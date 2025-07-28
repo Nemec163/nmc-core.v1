@@ -31,7 +31,11 @@
   ],
   "scripts": {
     "build": "node build.js",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "lint": "echo \"No linting configured\" && exit 0",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests specified\" && exit 0",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\""
   },
   "peerDependencies": {
     "react": "^19.1.0",

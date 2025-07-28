@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rimraf .next dist",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "next": "15.3.0",

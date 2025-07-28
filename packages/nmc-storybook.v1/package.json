@@ -7,7 +7,11 @@
     "dev": "storybook dev -p 6006",
     "build": "storybook build",
     "preview": "serve storybook-static",
-    "build:storybook": "pnpm --filter nmc-storybook.v1 build"
+    "build:storybook": "pnpm --filter nmc-storybook.v1 build",
+    "clean": "rimraf storybook-static",
+    "lint": "echo \"No linting configured\" && exit 0",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "keywords": [],
   "author": "",

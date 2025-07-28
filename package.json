@@ -11,11 +11,24 @@
     "dev:site": "pnpm --filter nmc-site.v1 dev",
     "dev:server": "pnpm --filter nmc-server.v1 dev",
     "dev:storybook": "pnpm --filter nmc-storybook.v1 dev",
-    "build:storybook": "pnpm --filter nmc-storybook.v1 build",
     "build": "turbo run build",
-    "lint": "turbo run lint"
+    "build:storybook": "pnpm --filter nmc-storybook.v1 build",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint -- --fix",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "test:e2e": "turbo run test:e2e",
+    "test:coverage": "turbo run test -- --coverage",
+    "clean": "turbo run clean",
+    "format": "turbo run format",
+    "typecheck": "turbo run typecheck",
+    "ci": "turbo run lint test build",
+    "ci:cache": "turbo run lint test build --cache-dir=.turbo",
+    "ci:parallel": "turbo run lint test build --parallel",
+    "prune": "turbo prune --scope=",
+    "graph": "turbo run build --graph=dependency-graph.html"
   },
   "devDependencies": {
-    "turbo": "^1.13.4"
+    "turbo": "^2.5.4"
   }
 }
