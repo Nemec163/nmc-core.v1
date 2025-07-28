@@ -14,11 +14,11 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json tsconfig.base.js
 COPY apps/*/package.json ./apps/*/
 COPY packages/*/package.json ./packages/*/
 
-# Install dependencies
-RUN pnpm install --no-frozen-lockfile
-
 # Copy source code
 COPY . .
+
+# Install dependencies
+RUN pnpm install --no-frozen-lockfile
 
 # Build dependencies first (ui package)
 RUN pnpm --filter nmc-ui.v1 build
