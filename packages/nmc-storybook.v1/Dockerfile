@@ -11,8 +11,10 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json tsconfig.base.json ./
 
 # Copy package manifests
-COPY apps/*/package.json ./apps/*/
-COPY packages/*/package.json ./packages/*/
+COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/
+COPY apps/nmc-site.v1/package.json ./apps/nmc-site.v1/
+COPY packages/nmc-ui.v1/package.json ./packages/nmc-ui.v1/
+COPY packages/nmc-storybook.v1/package.json ./packages/nmc-storybook.v1/
 
 # Copy source code
 COPY . .
