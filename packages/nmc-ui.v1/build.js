@@ -32,7 +32,7 @@ const buildBundle = async (format, outfile) => {
     platform: 'neutral',
     format,
     outfile,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'lucide-react'],
     loader: { '.scss': 'empty' },
     define: {
       'process.env.NODE_ENV': '"production"'
