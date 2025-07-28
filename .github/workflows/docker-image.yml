@@ -42,4 +42,4 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo systemctl reload nginx
+            cd /path/to/your/project && docker-compose exec nginx nginx -s reload
