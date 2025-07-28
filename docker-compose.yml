@@ -8,7 +8,7 @@ services:
     volumes:
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./services/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./packages/nmc-storybook.v1/storybook-static:/var/www/storybook:ro
+      - storybook-static:/var/www/storybook:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
     networks:
       - nmc-network
@@ -17,6 +17,8 @@ services:
         condition: service_healthy
       nmc-server:
         condition: service_healthy
+      nmc-storybook:
+        condition: service_completed_successfully
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health" ]
@@ -57,6 +59,19 @@ services:
       timeout: 10s
       retries: 5
       start_period: 120s
+
+  nmc-storybook:
+    build:
+      context: .
+      dockerfile: packages/nmc-storybook.v1/Dockerfile
+      target: export
+    container_name: nmc-storybook-builder
+    volumes:
+      - storybook-static:/output
+    command: ['sh', '-c', 'cp -r /storybook-static/* /output/ && echo "Storybook build completed"']
+
+volumes:
+  storybook-static:
 
 networks:
   nmc-network:
