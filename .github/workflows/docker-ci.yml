@@ -50,11 +50,20 @@ jobs:
           type=semver,pattern={{major}}.{{minor}}
           type=sha,prefix={{branch}}-
 
+    - name: Set Dockerfile path
+      id: dockerfile
+      run: |
+        if [ "${{ matrix.service }}" = "storybook" ]; then
+          echo "path=./packages/nmc-${{ matrix.service }}.v1/Dockerfile" >> $GITHUB_OUTPUT
+        else
+          echo "path=./apps/nmc-${{ matrix.service }}.v1/Dockerfile" >> $GITHUB_OUTPUT
+        fi
+
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: ./apps/nmc-${{ matrix.service }}.v1/Dockerfile
+        file: ${{ steps.dockerfile.outputs.path }}
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}

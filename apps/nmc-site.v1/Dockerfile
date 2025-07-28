@@ -3,7 +3,7 @@
 
 # Import shared base
 FROM docker/dockerfile:1.7-labs AS dockerfile-utils
-FROM ../../docker/Dockerfile.base AS base
+FROM ../../services/docker/Dockerfile.base AS base
 
 # Dependencies stage with cache mount
 FROM deps-base AS deps

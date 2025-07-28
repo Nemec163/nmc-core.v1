@@ -2,7 +2,7 @@
 # Multi-stage build for NestJS application with optimized caching
 
 # Import shared base
-FROM ../../docker/Dockerfile.base AS base
+FROM ../../services/docker/Dockerfile.base AS base
 
 # Dependencies stage with cache mount
 FROM deps-base AS deps
