@@ -111,10 +111,19 @@ services:
       # Build arguments for optimization
       args:
         - BUILDKIT_INLINE_CACHE=1
+        - NODE_ENV=production
     container_name: nmc-storybook-builder
     volumes:
       - storybook-static:/output
     command: ['sh', '-c', 'cp -r /storybook-static/* /output/ && echo "Storybook build completed"']
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2'
+        reservations:
+          memory: 2G
+          cpus: '1'
 
   # Local registry for BuildKit cache (development)
   registry:

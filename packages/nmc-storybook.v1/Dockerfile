@@ -22,9 +22,15 @@ RUN apk add --no-cache \
 # Enable and configure pnpm with caching
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+# Set pnpm configuration for better stability
+ENV PNPM_TIMEOUT=300000
+ENV CI=true
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN corepack enable && \
     corepack prepare pnpm@latest --activate && \
-    pnpm config set store-dir ~/.pnpm-store
+    pnpm config set store-dir ~/.pnpm-store && \
+    pnpm config set fetch-timeout 300000 && \
+    pnpm config set network-timeout 300000
 
 # Set working directory
 WORKDIR /app
@@ -59,7 +65,7 @@ COPY packages/nmc-ui.v1/package.json ./packages/nmc-ui.v1/
 # Install dependencies with cache mount for pnpm store
 RUN --mount=type=cache,target=/pnpm-cache,uid=1001,gid=1001 \
     --mount=type=cache,target=/app/node_modules/.pnpm,uid=1001,gid=1001 \
-    pnpm install --frozen-lockfile --filter nmc-storybook.v1... --reporter=append-only --no-optional
+    pnpm install --frozen-lockfile --filter nmc-storybook.v1... --reporter=append-only --no-optional --timeout=300000
 
 # Build stage
 FROM build-base AS build
@@ -83,7 +89,7 @@ RUN --mount=type=cache,target=/app/.turbo,uid=1001,gid=1001 \
 WORKDIR /app/packages/nmc-storybook.v1
 RUN --mount=type=cache,target=/app/.turbo,uid=1001,gid=1001 \
     --mount=type=cache,target=/app/packages/nmc-storybook.v1/.storybook-cache,uid=1001,gid=1001 \
-    pnpm build
+    NODE_OPTIONS="--max-old-space-size=4096" pnpm build
 
 # Export stage - minimal alpine with built static files
 FROM alpine:3.19 AS export
