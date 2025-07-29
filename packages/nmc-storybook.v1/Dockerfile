@@ -65,7 +65,7 @@ COPY packages/nmc-ui.v1/package.json ./packages/nmc-ui.v1/
 # Install dependencies with cache mount for pnpm store
 RUN --mount=type=cache,target=/pnpm-cache,uid=1001,gid=1001 \
     --mount=type=cache,target=/app/node_modules/.pnpm,uid=1001,gid=1001 \
-    pnpm install --frozen-lockfile --filter nmc-storybook.v1... --reporter=append-only --no-optional --timeout=300000
+    pnpm install --frozen-lockfile --filter nmc-storybook.v1... --reporter=append-only --no-optional --fetch-timeout=300000
 
 # Build stage
 FROM build-base AS build
