@@ -52,20 +52,22 @@ FROM node-base AS runtime-base
 
 # Dependencies stage with cache mount
 FROM deps-base AS deps
-# Copy package manifests for optimal layer caching
+# Copy ALL package manifests that will be needed
 COPY apps/nmc-site.v1/package.json ./apps/nmc-site.v1/
 COPY packages/nmc-ui.v1/package.json ./packages/nmc-ui.v1/
+COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/
+COPY packages/nmc-storybook.v1/package.json ./packages/nmc-storybook.v1/
 
-# Install dependencies with cache mount for pnpm store
+# Install ALL dependencies (including devDependencies for build)
 RUN --mount=type=cache,target=/pnpm-cache,uid=1001,gid=1001 \
     --mount=type=cache,target=/app/node_modules/.pnpm,uid=1001,gid=1001 \
-    pnpm install --frozen-lockfile --filter nmc-site.v1...
+    pnpm config set node-linker hoisted && \
+    pnpm install
 
 # Build stage
 FROM build-base AS build
 # Copy dependencies from deps stage
 COPY --from=deps --chown=appuser:appgroup /app/node_modules ./node_modules
-COPY --from=deps --chown=appuser:appgroup /app/apps/nmc-site.v1/node_modules ./apps/nmc-site.v1/node_modules
 
 # Copy source files for build
 COPY --chown=appuser:appgroup packages/nmc-ui.v1/ ./packages/nmc-ui.v1/

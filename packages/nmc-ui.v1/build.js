@@ -14,12 +14,12 @@ const clean = () => {
 
 const buildTypes = () => {
   console.log('📄 Type generation...');
-  execSync('tsc --emitDeclarationOnly');
+  execSync('npx tsc --emitDeclarationOnly');
 };
 
 const buildSCSS = () => {
   console.log('🎨 SCSS Compilation...');
-  execSync(`sass ${STYLE_SRC} ${STYLE_OUT}`);
+  execSync(`npx sass ${STYLE_SRC} ${STYLE_OUT}`);
 };
 
 const buildBundle = async (format, outfile) => {
