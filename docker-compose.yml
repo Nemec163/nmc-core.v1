@@ -75,7 +75,6 @@ services:
       args:
         - BUILDKIT_INLINE_CACHE=1
     image: nmc-server:latest
-    image: nmc-server:latest
     container_name: nmc-server
     expose:
       - "3001"
