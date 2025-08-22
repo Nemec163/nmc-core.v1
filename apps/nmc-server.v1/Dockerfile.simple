@@ -1,0 +1,46 @@
+# Simplified Dockerfile for NestJS application
+FROM node:20-alpine
+
+# Security: Run as non-root user
+RUN addgroup --system --gid 1001 appgroup && \
+    adduser --system --uid 1001 --ingroup appgroup appuser
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files for workspace
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY turbo.json tsconfig.base.json ./
+
+# Copy specific package manifests
+COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/
+COPY packages/nmc-ui.v1/package.json ./packages/nmc-ui.v1/ 2>/dev/null || true
+
+# Use npm to avoid corepack/pnpm issues
+RUN npm install -g npm@latest && \
+    chown -R appuser:appgroup /app
+
+# Copy all source files
+COPY . .
+RUN chown -R appuser:appgroup /app
+
+# Switch to app user
+USER appuser
+
+# Install dependencies using npm workspaces fallback
+RUN cd apps/nmc-server.v1 && npm install
+
+# Build the application
+RUN cd apps/nmc-server.v1 && npm run build
+
+# Set working directory to the app
+WORKDIR /app/apps/nmc-server.v1
+
+# Expose port
+EXPOSE 3001
+
+# Environment
+ENV NODE_ENV=production
+
+# Start command
+CMD ["npm", "run", "start:prod"]

@@ -1,90 +1,49 @@
-# syntax=docker/dockerfile:1.7-labs
-# Multi-stage build for Storybook with optimized caching
-
-# Shared base image with BuildKit optimization
-FROM node:20-alpine AS node-base
+# Simplified single-stage build for Storybook
+FROM node:20-alpine
 
 # Security: Run as non-root user
-ARG UID=1001
-ARG GID=1001
-RUN addgroup --system --gid ${GID} appgroup && \
-    adduser --system --uid ${UID} --ingroup appgroup appuser
-
-# Install system dependencies and tools
-# RUN apk add --no-cache curl && \
-#     # Security: Remove package cache
-#     rm -rf /var/cache/apk/*
-
-# Enable and configure pnpm with caching
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-# Set pnpm configuration for better stability
-ENV PNPM_TIMEOUT=300000
-ENV CI=true
-ENV NODE_OPTIONS="--max-old-space-size=4096"
-RUN corepack enable
+RUN addgroup --system --gid 1001 appgroup && \
+    adduser --system --uid 1001 --ingroup appgroup appuser
 
 # Set working directory
 WORKDIR /app
 
-# Cache mount for pnpm store
-ENV PNPM_CACHE_FOLDER=/pnpm-cache
+# Set memory limit for large builds
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Dependencies stage with optimized caching
-FROM node-base AS deps-base
-# Copy workspace files for dependency resolution
+# Copy workspace files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY tsconfig.base.json ./
 
-# Create cache directories
-RUN mkdir -p /pnpm-cache && chown -R appuser:appgroup /pnpm-cache /app
-
-# Build stage base
-FROM node-base AS build-base
-# Copy all source files (will be filtered by specific builds)
-COPY --chown=appuser:appgroup . .
-RUN chown -R appuser:appgroup /app
-
-# Production runtime base
-FROM node-base AS runtime-base
-
-# Dependencies stage with cache mount
-FROM deps-base AS deps
-# Copy package manifests for optimal layer caching
+# Copy package manifests
 COPY packages/nmc-storybook.v1/package.json ./packages/nmc-storybook.v1/
 COPY packages/nmc-ui.v1/package.json ./packages/nmc-ui.v1/
 
-# Install dependencies with cache mount for pnpm store
-RUN --mount=type=cache,target=/pnpm-cache,uid=1001,gid=1001 \
-    --mount=type=cache,target=/app/node_modules/.pnpm,uid=1001,gid=1001 \
-    pnpm config set node-linker hoisted && \
-    pnpm install \
-        --filter nmc-storybook.v1... \
-        --reporter=append-only \
-        --fetch-timeout=300000
+# Copy all source files and set ownership
+COPY . .
+RUN chown -R appuser:appgroup /app
 
-# Build stage
-FROM build-base AS build
-# Copy dependencies from deps stage
-COPY --from=deps --chown=appuser:appgroup /app/node_modules ./node_modules
-COPY --from=deps --chown=appuser:appgroup /app/packages/ ./packages/
+# Install pnpm globally as root (with SSL workaround for build environment)
+RUN npm config set strict-ssl false && \
+    npm install -g pnpm@latest && \
+    npm config set strict-ssl true
 
-# Copy source files for build
-COPY --chown=appuser:appgroup packages/nmc-ui.v1/ ./packages/nmc-ui.v1/
-COPY --chown=appuser:appgroup packages/nmc-storybook.v1/ ./packages/nmc-storybook.v1/
-
-# Switch to app user for build
+# Switch to app user
 USER appuser
 
-# Build UI package first
-RUN --mount=type=cache,target=/app/.turbo,uid=1001,gid=1001 \
-    pnpm --filter nmc-ui.v1 build
+# Install project dependencies
+RUN pnpm config set strict-ssl false && \
+    pnpm install --filter nmc-storybook.v1... --reporter=append-only && \
+    pnpm config set strict-ssl true
 
-# Build Storybook with cache mount
+# Build UI package first
+RUN pnpm --filter nmc-ui.v1 build
+
+# Set working directory to storybook package
 WORKDIR /app/packages/nmc-storybook.v1
-RUN --mount=type=cache,target=/app/.turbo,uid=1001,gid=1001 \
-    --mount=type=cache,target=/app/packages/nmc-storybook.v1/.storybook-cache,uid=1001,gid=1001 \
-    NODE_OPTIONS="--max-old-space-size=4096" pnpm build
+
+# Build Storybook
+RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm build
 
 # Export stage - minimal alpine with built static files
 FROM alpine:3.19 AS export
@@ -93,12 +52,8 @@ FROM alpine:3.19 AS export
 RUN addgroup -g 1001 -S appgroup && \
     adduser -u 1001 -S appuser -G appgroup
 
-# Install minimal tools for file operations
-# RUN apk add --no-cache rsync && \
-#     rm -rf /var/cache/apk/*
-
 # Copy built static files
-COPY --from=build --chown=appuser:appgroup /app/packages/nmc-storybook.v1/storybook-static /storybook-static
+COPY --from=0 --chown=appuser:appgroup /app/packages/nmc-storybook.v1/storybook-static /storybook-static
 
 # Switch to non-root user
 USER appuser
