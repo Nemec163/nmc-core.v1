@@ -30,11 +30,6 @@ services:
     build:
       context: .
       dockerfile: apps/nmc-site.v1/Dockerfile
-      # Enable BuildKit optimizations
-      cache_from:
-        - nmc-site:latest
-        - localhost:5000/nmc/cache:site-deps
-        - localhost:5000/nmc/cache:site-build
       # Build arguments for optimization
       args:
         - BUILDKIT_INLINE_CACHE=1
@@ -56,7 +51,7 @@ services:
       - SETGID
       - SETUID
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -66,11 +61,6 @@ services:
     build:
       context: .
       dockerfile: apps/nmc-server.v1/Dockerfile
-      # Enable BuildKit optimizations
-      cache_from:
-        - nmc-server:latest
-        - localhost:5000/nmc/cache:server-deps
-        - localhost:5000/nmc/cache:server-build
       # Build arguments for optimization
       args:
         - BUILDKIT_INLINE_CACHE=1
@@ -92,7 +82,7 @@ services:
       - SETGID
       - SETUID
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -103,10 +93,6 @@ services:
       context: .
       dockerfile: packages/nmc-storybook.v1/Dockerfile
       target: export
-      # Enable BuildKit optimizations
-      cache_from:
-        - localhost:5000/nmc/cache:storybook-deps
-        - localhost:5000/nmc/cache:storybook-build
       # Build arguments for optimization
       args:
         - BUILDKIT_INLINE_CACHE=1

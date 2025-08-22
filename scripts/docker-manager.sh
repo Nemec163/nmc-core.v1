@@ -57,10 +57,10 @@ working() {
     log "${WORKING} ${YELLOW}$1${NC}"
 }
 
-# Check if docker-compose is available
+# Check if docker compose is available
 check_dependencies() {
-    if ! command -v docker-compose &> /dev/null; then
-        error_exit "docker-compose not found. Please install Docker Compose."
+    if ! docker compose version &> /dev/null; then
+        error_exit "docker compose not found. Please install Docker Compose."
     fi
     
     if ! docker info &> /dev/null; then
@@ -77,15 +77,15 @@ health_check() {
     
     if [[ "${service}" == "all" ]]; then
         info "Checking health of all services..."
-        docker-compose ps --services | while read -r svc; do
-            if docker-compose ps "${svc}" | grep -q "healthy\|Up"; then
+        docker compose ps --services | while read -r svc; do
+            if docker compose ps "${svc}" | grep -q "healthy\|Up"; then
                 success "Service ${svc} is healthy"
             else
                 log "${ERROR} ${RED}Service ${svc} is not healthy${NC}"
             fi
         done
     else
-        if docker-compose ps "${service}" | grep -q "healthy\|Up"; then
+        if docker compose ps "${service}" | grep -q "healthy\|Up"; then
             success "Service ${service} is healthy"
         else
             error_exit "Service ${service} is not healthy"
@@ -101,16 +101,16 @@ build_services() {
     if [[ "${force_rebuild}" == "true" ]]; then
         working "Force rebuilding services..."
         if [[ -n "${service}" ]]; then
-            docker-compose build --no-cache "${service}"
+            docker compose build --no-cache "${service}"
         else
-            docker-compose build --no-cache
+            docker compose build --no-cache
         fi
     else
         working "Building services..."
         if [[ -n "${service}" ]]; then
-            docker-compose build "${service}"
+            docker compose build "${service}"
         else
-            docker-compose build
+            docker compose build
         fi
     fi
     
@@ -123,9 +123,9 @@ start_services() {
     
     working "Starting services..."
     if [[ -n "${service}" ]]; then
-        docker-compose up -d "${service}"
+        docker compose up -d "${service}"
     else
-        docker-compose up -d
+        docker compose up -d
     fi
     
     success "Services started successfully"
@@ -137,9 +137,9 @@ stop_services() {
     
     working "Stopping services..."
     if [[ -n "${service}" ]]; then
-        docker-compose stop "${service}"
+        docker compose stop "${service}"
     else
-        docker-compose stop
+        docker compose stop
     fi
     
     success "Services stopped successfully"
@@ -151,9 +151,9 @@ restart_services() {
     
     working "Restarting services..."
     if [[ -n "${service}" ]]; then
-        docker-compose restart "${service}"
+        docker compose restart "${service}"
     else
-        docker-compose restart
+        docker compose restart
     fi
     
     success "Services restarted successfully"
@@ -164,7 +164,7 @@ clean_docker() {
     working "Cleaning Docker resources..."
     
     # Stop all containers if running
-    docker-compose down 2>/dev/null || true
+    docker compose down 2>/dev/null || true
     
     # Remove stopped containers
     docker container prune -f
@@ -192,16 +192,16 @@ rebuild_service() {
     working "Rebuilding service: ${service}"
     
     # Stop the service
-    docker-compose stop "${service}" 2>/dev/null || true
+    docker compose stop "${service}" 2>/dev/null || true
     
     # Remove the container
-    docker-compose rm -f "${service}" 2>/dev/null || true
+    docker compose rm -f "${service}" 2>/dev/null || true
     
     # Build with no cache
-    docker-compose build --no-cache "${service}"
+    docker compose build --no-cache "${service}"
     
     # Start the service
-    docker-compose up -d "${service}"
+    docker compose up -d "${service}"
     
     success "Service ${service} rebuilt successfully"
 }
@@ -213,15 +213,15 @@ show_logs() {
     
     if [[ "${follow}" == "true" ]]; then
         if [[ -n "${service}" ]]; then
-            docker-compose logs -f "${service}"
+            docker compose logs -f "${service}"
         else
-            docker-compose logs -f
+            docker compose logs -f
         fi
     else
         if [[ -n "${service}" ]]; then
-            docker-compose logs --tail=100 "${service}"
+            docker compose logs --tail=100 "${service}"
         else
-            docker-compose logs --tail=100
+            docker compose logs --tail=100
         fi
     fi
 }
@@ -229,7 +229,7 @@ show_logs() {
 # Show status
 show_status() {
     info "Docker Compose Services Status:"
-    docker-compose ps
+    docker compose ps
     
     echo ""
     info "Docker System Information:"
@@ -241,7 +241,7 @@ deploy() {
     working "Starting full deployment..."
     
     # Stop all services
-    docker-compose down
+    docker compose down
     
     # Clean up
     clean_docker

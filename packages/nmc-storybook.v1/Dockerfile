@@ -11,13 +11,9 @@ RUN addgroup --system --gid ${GID} appgroup && \
     adduser --system --uid ${UID} --ingroup appgroup appuser
 
 # Install system dependencies and tools
-RUN apk add --no-cache \
-    curl \
-    ca-certificates \
-    tzdata \
-    dumb-init && \
-    # Security: Remove package cache
-    rm -rf /var/cache/apk/*
+# RUN apk add --no-cache curl && \
+#     # Security: Remove package cache
+#     rm -rf /var/cache/apk/*
 
 # Enable and configure pnpm with caching
 ENV PNPM_HOME="/pnpm"
@@ -26,11 +22,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 ENV PNPM_TIMEOUT=300000
 ENV CI=true
 ENV NODE_OPTIONS="--max-old-space-size=4096"
-RUN corepack enable && \
-    corepack prepare pnpm@latest --activate && \
-    pnpm config set store-dir ~/.pnpm-store && \
-    pnpm config set fetch-timeout 300000 && \
-    pnpm config set network-timeout 300000
+RUN corepack enable
 
 # Set working directory
 WORKDIR /app
@@ -102,8 +94,8 @@ RUN addgroup -g 1001 -S appgroup && \
     adduser -u 1001 -S appuser -G appgroup
 
 # Install minimal tools for file operations
-RUN apk add --no-cache rsync ca-certificates && \
-    rm -rf /var/cache/apk/*
+# RUN apk add --no-cache rsync && \
+#     rm -rf /var/cache/apk/*
 
 # Copy built static files
 COPY --from=build --chown=appuser:appgroup /app/packages/nmc-storybook.v1/storybook-static /storybook-static
