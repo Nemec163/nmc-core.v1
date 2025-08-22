@@ -1,3 +1,11 @@
+x-build-args: &build-args
+  BUILDKIT_INLINE_CACHE: 1
+  DOCKER_BUILDKIT: 1
+
+x-build-cache: &build-cache
+  cache_from:
+    - type=registry,ref=localhost:5000/nmc/cache
+
 services:
   nginx:
     image: nginx:alpine
@@ -33,6 +41,11 @@ services:
       # Build arguments for optimization
       args:
         - BUILDKIT_INLINE_CACHE=1
+      # Enable BuildKit caching
+      cache_from:
+        - nmc-site:latest
+      # Parallel build support
+      target: runtime
     image: nmc-site:latest
     container_name: nmc-site
     expose:
@@ -64,6 +77,11 @@ services:
       # Build arguments for optimization
       args:
         - BUILDKIT_INLINE_CACHE=1
+      # Enable BuildKit caching
+      cache_from:
+        - nmc-server:latest
+      # Parallel build support
+      target: runtime
     image: nmc-server:latest
     container_name: nmc-server
     expose:
@@ -97,6 +115,9 @@ services:
       args:
         - BUILDKIT_INLINE_CACHE=1
         - NODE_ENV=production
+      # Enable BuildKit caching
+      cache_from:
+        - nmc-storybook:latest
     container_name: nmc-storybook-builder
     volumes:
       - storybook-static:/output
@@ -105,10 +126,10 @@ services:
       resources:
         limits:
           memory: 4G
-          cpus: '2'
+          cpus: '1'
         reservations:
           memory: 2G
-          cpus: '1'
+          cpus: '0.5'
 
   # Local registry for BuildKit cache (development)
   registry:

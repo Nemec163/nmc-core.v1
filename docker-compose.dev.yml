@@ -1,0 +1,93 @@
+# Docker Compose Override for Local Development
+# This file optimizes builds for single CPU systems and local development
+
+services:
+  nmc-site:
+    build:
+      # Use cached layers for faster rebuilds
+      cache_from:
+        - nmc-site:latest
+        - nmc-site:dev
+      # Use local cache directory
+      cache_to:
+        - type=local,dest=.docker-cache/site
+    # Resource limits for single CPU systems  
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '0.8'
+        reservations:
+          memory: 1G
+          cpus: '0.2'
+
+  nmc-server:
+    build:
+      # Use cached layers for faster rebuilds
+      cache_from:
+        - nmc-server:latest
+        - nmc-server:dev
+      # Use local cache directory
+      cache_to:
+        - type=local,dest=.docker-cache/server
+    # Resource limits for single CPU systems
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '0.8'
+        reservations:
+          memory: 1G
+          cpus: '0.2'
+
+  nmc-storybook:
+    build:
+      # Use cached layers for faster rebuilds  
+      cache_from:
+        - nmc-storybook:latest
+        - nmc-storybook:dev
+      # Use local cache directory
+      cache_to:
+        - type=local,dest=.docker-cache/storybook
+    # Optimized resource limits for single CPU systems
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+          cpus: '0.9'
+        reservations:
+          memory: 1.5G
+          cpus: '0.3'
+
+  # Development tools
+  registry:
+    # Enable registry for all profiles in dev
+    profiles:
+      - development
+      - ""
+    environment:
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.2'
+
+# Development volumes for caching
+volumes:
+  docker-cache:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/.docker-cache
+      
+# Enable buildx for better caching
+x-build-defaults: &build-defaults
+  platforms:
+    - linux/amd64
+  cache_from:
+    - type=local,src=.docker-cache
+  cache_to:
+    - type=local,dest=.docker-cache,mode=max
