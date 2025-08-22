@@ -2,6 +2,7 @@
   "name": "nmc-core.v1",
   "private": true,
   "version": "1.0.0",
+  "packageManager": "pnpm@10.15.0",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -16,6 +17,6 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "turbo": "^1.13.4"
+    "turbo": "^2.5.6"
   }
 }
