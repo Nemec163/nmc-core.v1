@@ -1,0 +1,38 @@
+# Minimal test Dockerfile for NestJS
+FROM node:20-alpine
+
+# Basic setup
+RUN addgroup --system --gid 1001 appgroup && \
+    adduser --system --uid 1001 --ingroup appgroup appuser
+
+WORKDIR /app
+
+# Copy and install dependencies with SSL workaround
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/
+
+# Install pnpm globally
+RUN npm config set strict-ssl false && \
+    npm install -g pnpm@latest && \
+    npm config set strict-ssl true
+
+# Copy all files
+COPY . .
+RUN chown -R appuser:appgroup /app
+
+# Switch to app user
+USER appuser
+
+# Install dependencies with SSL workaround
+RUN pnpm config set strict-ssl false && \
+    echo "Installing dependencies..." && \
+    pnpm install --filter nmc-server.v1... --reporter=append-only --no-frozen-lockfile && \
+    echo "Building application..." && \
+    pnpm --filter nmc-server.v1 build && \
+    pnpm config set strict-ssl true
+
+WORKDIR /app/apps/nmc-server.v1
+EXPOSE 3001
+ENV NODE_ENV=production
+
+CMD ["pnpm", "start:prod"]

@@ -44,8 +44,6 @@ services:
       # Enable BuildKit caching
       cache_from:
         - nmc-site:latest
-      # Parallel build support
-      target: runtime
     image: nmc-site:latest
     container_name: nmc-site
     expose:
@@ -80,8 +78,6 @@ services:
       # Enable BuildKit caching
       cache_from:
         - nmc-server:latest
-      # Parallel build support
-      target: runtime
     image: nmc-server:latest
     container_name: nmc-server
     expose:
