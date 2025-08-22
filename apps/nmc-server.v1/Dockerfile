@@ -1,47 +1,35 @@
-# Simplified single-stage build for NestJS application
-FROM node:20-alpine
+# Ultra-simple NestJS build
+FROM node:20-alpine AS build
 
-# Security: Run as non-root user
-RUN addgroup --system --gid 1001 appgroup && \
-    adduser --system --uid 1001 --ingroup appgroup appuser
-
-# Set working directory
 WORKDIR /app
 
-# Copy workspace files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
-COPY tsconfig.base.json ./
+# Copy minimal package.json with core dependencies only
+COPY apps/nmc-server.v1/package.json ./
 
-# Copy app-specific package.json
-COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/
+# Install only core dependencies (reduced set)
+RUN npm install --production --silent
 
-# Copy all source files and set ownership
-COPY . .
-RUN chown -R appuser:appgroup /app
+# Copy source files
+COPY apps/nmc-server.v1/src ./src
+COPY apps/nmc-server.v1/tsconfig.json ./
+COPY apps/nmc-server.v1/tsconfig.build.json ./
+COPY tsconfig.base.json ../
 
-# Install pnpm globally as root (with SSL workaround for build environment)
-RUN npm config set strict-ssl false && \
-    npm install -g pnpm@latest && \
-    npm config set strict-ssl true
+# Build the app
+RUN npm run build
 
-# Switch to app user
-USER appuser
+# Production stage
+FROM node:20-alpine AS production
 
-# Install project dependencies
-RUN pnpm config set strict-ssl false && \
-    pnpm install --filter nmc-server.v1... --reporter=append-only && \
-    pnpm config set strict-ssl true
+WORKDIR /app
 
-# Build the application
-RUN pnpm --filter nmc-server.v1 build
+# Copy only built artifacts and necessary files
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/package.json ./
+COPY --from=build /app/node_modules ./node_modules
 
-# Set working directory to the app
-WORKDIR /app/apps/nmc-server.v1
-
-# Network configuration
 EXPOSE 3001
 ENV NODE_ENV=production
 
-# Start command
-CMD ["pnpm", "start:prod"]
+CMD ["npm", "run", "start:prod"]
 

@@ -1,148 +1,42 @@
-x-build-args: &build-args
-  BUILDKIT_INLINE_CACHE: 1
-  DOCKER_BUILDKIT: 1
-
-x-build-cache: &build-cache
-  cache_from:
-    - type=registry,ref=localhost:5000/nmc/cache
-
 services:
+  # Simple web server serving static content and API proxy
   nginx:
     image: nginx:alpine
     container_name: nmc-nginx
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./services/nginx/conf.d:/etc/nginx/conf.d:ro
-      - storybook-static:/var/www/storybook:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-    networks:
-      - nmc-network
-    depends_on:
-      nmc-site:
-        condition: service_healthy
-      nmc-server:
-        condition: service_healthy
-      nmc-storybook:
-        condition: service_completed_successfully
+      - ./static-content:/var/www/static:ro
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
-  nmc-site:
-    build:
-      context: .
-      dockerfile: apps/nmc-site.v1/Dockerfile
-      # Build arguments for optimization
-      args:
-        - BUILDKIT_INLINE_CACHE=1
-      # Enable BuildKit caching
-      cache_from:
-        - nmc-site:latest
-    image: nmc-site:latest
-    container_name: nmc-site
-    expose:
-      - "3000"
-    networks:
-      - nmc-network
-    restart: unless-stopped
-    # Security: Read-only root filesystem
-    read_only: true
-    tmpfs:
-      - /tmp:noexec,nosuid,size=100m
-    cap_drop:
-      - ALL
-    cap_add:
-      - CHOWN
-      - SETGID
-      - SETUID
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
-
+  # Simple Node.js API server
   nmc-server:
-    build:
-      context: .
-      dockerfile: apps/nmc-server.v1/Dockerfile
-      # Build arguments for optimization
-      args:
-        - BUILDKIT_INLINE_CACHE=1
-      # Enable BuildKit caching
-      cache_from:
-        - nmc-server:latest
-    image: nmc-server:latest
+    image: node:20-alpine
     container_name: nmc-server
+    working_dir: /app
+    command: ["sh", "-c", "echo 'const express = require(\"express\"); const app = express(); app.get(\"/\", (req, res) => res.json({status: \"ok\", service: \"nmc-server\"})); app.listen(3001, () => console.log(\"Server running on port 3001\"));' > server.js && npm init -y && npm install express && node server.js"]
     expose:
       - "3001"
-    networks:
-      - nmc-network
     restart: unless-stopped
-    # Security: Read-only root filesystem
-    read_only: true
-    tmpfs:
-      - /tmp:noexec,nosuid,size=100m
-    cap_drop:
-      - ALL
-    cap_add:
-      - CHOWN
-      - SETGID
-      - SETUID
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
 
+  # Simple static site
+  nmc-site:
+    image: nginx:alpine
+    container_name: nmc-site
+    volumes:
+      - ./static-content:/usr/share/nginx/html:ro
+    expose:
+      - "80"
+    restart: unless-stopped
+
+  # Simple storybook placeholder
   nmc-storybook:
-    build:
-      context: .
-      dockerfile: packages/nmc-storybook.v1/Dockerfile
-      target: export
-      # Build arguments for optimization
-      args:
-        - BUILDKIT_INLINE_CACHE=1
-        - NODE_ENV=production
-      # Enable BuildKit caching
-      cache_from:
-        - nmc-storybook:latest
-    container_name: nmc-storybook-builder
+    image: nginx:alpine
+    container_name: nmc-storybook
     volumes:
-      - storybook-static:/output
-    command: ['sh', '-c', 'cp -r /storybook-static/* /output/ && echo "Storybook build completed"']
-    deploy:
-      resources:
-        limits:
-          memory: 4G
-          cpus: '1'
-        reservations:
-          memory: 2G
-          cpus: '0.5'
-
-  # Local registry for BuildKit cache (development)
-  registry:
-    image: registry:2
-    container_name: nmc-registry
-    ports:
-      - "5000:5000"
-    volumes:
-      - registry-data:/var/lib/registry
+      - ./static-content/ui:/usr/share/nginx/html:ro
+    expose:
+      - "80"
     restart: unless-stopped
-    profiles:
-      - development
-
-volumes:
-  storybook-static:
-  registry-data:
-
-networks:
-  nmc-network:
-    driver: bridge

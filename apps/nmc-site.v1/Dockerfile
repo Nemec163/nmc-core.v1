@@ -1,51 +1,37 @@
-# Simplified single-stage build for Next.js application
-FROM node:20-alpine
+# Ultra-simple Next.js build
+FROM node:20-alpine AS build
 
-# Security: Run as non-root user
-RUN addgroup --system --gid 1001 appgroup && \
-    adduser --system --uid 1001 --ingroup appgroup appuser
-
-# Set working directory
 WORKDIR /app
 
-# Copy workspace files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
-COPY tsconfig.base.json ./
+# Copy minimal package.json with core dependencies only
+COPY apps/nmc-site.v1/package.json ./
 
-# Copy package manifests
-COPY apps/nmc-site.v1/package.json ./apps/nmc-site.v1/
-COPY packages/nmc-ui.v1/package.json ./packages/nmc-ui.v1/
+# Install only production dependencies
+RUN npm install --production --silent
 
-# Copy all source files and set ownership
-COPY . .
-RUN chown -R appuser:appgroup /app
+# Copy source files
+COPY apps/nmc-site.v1/src ./src
+COPY apps/nmc-site.v1/public ./public
+COPY apps/nmc-site.v1/next.config.ts ./
+COPY apps/nmc-site.v1/tsconfig.json ./
+COPY tsconfig.base.json ../
 
-# Install pnpm globally as root (with SSL workaround for build environment)
-RUN npm config set strict-ssl false && \
-    npm install -g pnpm@latest && \
-    npm config set strict-ssl true
+# Build the app
+RUN npm run build
 
-# Switch to app user
-USER appuser
+# Production stage
+FROM node:20-alpine AS production
 
-# Install project dependencies
-RUN pnpm config set strict-ssl false && \
-    pnpm install --reporter=append-only && \
-    pnpm config set strict-ssl true
+WORKDIR /app
 
-# Build dependencies first (UI package)
-RUN pnpm --filter nmc-ui.v1 build
+# Copy only built artifacts and necessary files
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+COPY --from=build /app/package.json ./
+COPY --from=build /app/node_modules ./node_modules
 
-# Build Next.js app
-RUN pnpm --filter nmc-site.v1 build
-
-# Set working directory to the app
-WORKDIR /app/apps/nmc-site.v1
-
-# Network configuration
 EXPOSE 3000
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Start command
-CMD ["pnpm", "start"]
+CMD ["npm", "start"]
