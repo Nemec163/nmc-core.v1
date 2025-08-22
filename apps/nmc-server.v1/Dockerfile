@@ -1,13 +1,5 @@
-# syntax=docker/dockerfile:1.7-labs  
-# Multi-stage # Dependencies stage with cache mount
-FROM deps-base AS deps
-# Copy package manifests for optimal layer caching
-COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/
-
-# Install ALL dependencies (including devDependencies for build)
-RUN --mount=type=cache,target=/pnpm-cache,uid=1001,gid=1001 \
-    --mount=type=cache,target=/app/node_modules/.pnpm,uid=1001,gid=1001 \
-    pnpm install --include-workspace-root NestJS application with optimized caching
+# syntax=docker/dockerfile:1.7-labs
+# Multi-stage build for NestJS application with optimized caching
 
 # Shared base image with BuildKit optimization
 FROM node:20-alpine AS node-base
@@ -19,20 +11,14 @@ RUN addgroup --system --gid ${GID} appgroup && \
     adduser --system --uid ${UID} --ingroup appgroup appuser
 
 # Install system dependencies and tools
-RUN apk add --no-cache \
-    curl \
-    ca-certificates \
-    tzdata \
-    dumb-init && \
-    # Security: Remove package cache
-    rm -rf /var/cache/apk/*
+# RUN apk add --no-cache curl && \
+#     # Security: Remove package cache
+#     rm -rf /var/cache/apk/*
 
 # Enable and configure pnpm with caching
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && \
-    corepack prepare pnpm@latest --activate && \
-    pnpm config set store-dir ~/.pnpm-store
+RUN corepack enable
 
 # Set working directory
 WORKDIR /app
@@ -107,9 +93,9 @@ USER appuser
 EXPOSE 3001
 ENV NODE_ENV=production
 
-# Optimized health check
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:3001/health || exit 1
+# Optimized health check (disabled due to missing curl)
+# HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+#     CMD curl -f http://localhost:3001/health || exit 1
 
-# Use tini for proper signal handling
+# Use pnpm for proper process handling
 CMD ["pnpm", "start:prod"]

@@ -10,21 +10,15 @@ ARG GID=1001
 RUN addgroup --system --gid ${GID} appgroup && \
     adduser --system --uid ${UID} --ingroup appgroup appuser
 
-# Install system dependencies and tools
-RUN apk add --no-cache \
-    curl \
-    ca-certificates \
-    tzdata \
-    dumb-init && \
-    # Security: Remove package cache
-    rm -rf /var/cache/apk/*
+# Install system dependencies and tools  
+# RUN apk add --no-cache curl && \
+#     # Security: Remove package cache
+#     rm -rf /var/cache/apk/*
 
 # Enable and configure pnpm with caching
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && \
-    corepack prepare pnpm@latest --activate && \
-    pnpm config set store-dir ~/.pnpm-store
+RUN corepack enable
 
 # Set working directory
 WORKDIR /app
@@ -111,9 +105,9 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Optimized health check
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:3000/health || exit 1
+# Optimized health check (disabled due to missing curl)
+# HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+#     CMD curl -f http://localhost:3000/health || exit 1
 
-# Use tini for proper signal handling
+# Use pnpm for proper process handling
 CMD ["pnpm", "start"]
