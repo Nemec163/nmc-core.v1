@@ -42,6 +42,8 @@ playwright-report/
 docker-compose.override.yml
 *.local.yml
 **/*.local.yml
+.docker-cache/
+**/.docker-cache/
 
 # 🧪 Logs
 *.log
