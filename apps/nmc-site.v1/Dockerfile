@@ -80,6 +80,9 @@ USER appuser
 RUN --mount=type=cache,target=/app/.turbo,uid=1001,gid=1001 \
     pnpm --filter nmc-ui.v1 build
 
+# Ensure Next.js cache directory exists with proper permissions
+RUN mkdir -p apps/nmc-site.v1/.next
+
 # Build Next.js app with cache mount
 RUN --mount=type=cache,target=/app/apps/nmc-site.v1/.next/cache,uid=1001,gid=1001 \
     --mount=type=cache,target=/app/.turbo,uid=1001,gid=1001 \
