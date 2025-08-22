@@ -1,13 +1,5 @@
-# syntax=docker/dockerfile:1.7-labs  
-# Multi-stage # Dependencies stage with cache mount
-FROM deps-base AS deps
-# Copy package manifests for optimal layer caching
-COPY apps/nmc-server.v1/package.json ./apps/nmc-server.v1/
-
-# Install ALL dependencies (including devDependencies for build)
-RUN --mount=type=cache,target=/pnpm-cache,uid=1001,gid=1001 \
-    --mount=type=cache,target=/app/node_modules/.pnpm,uid=1001,gid=1001 \
-    pnpm install --include-workspace-root NestJS application with optimized caching
+# syntax=docker/dockerfile:1.7-labs
+# Multi-stage build for NestJS application with optimized caching
 
 # Shared base image with BuildKit optimization
 FROM node:20-alpine AS node-base
@@ -113,3 +105,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
 
 # Use tini for proper signal handling
 CMD ["pnpm", "start:prod"]
+
