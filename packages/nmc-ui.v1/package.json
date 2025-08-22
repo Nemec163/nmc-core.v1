@@ -38,12 +38,12 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "esbuild": "^0.20.0",
-    "rimraf": "^5.0.0",
-    "sass": "^1.86.3",
-    "typescript": "^5.8.3"
+    "@types/react": "^19.1.11",
+    "@types/react-dom": "^19.1.7",
+    "esbuild": "^0.25.9",
+    "rimraf": "^6.0.1",
+    "sass": "^1.90.0",
+    "typescript": "^5.9.2"
   },
   "publishConfig": {
     "access": "public"
@@ -62,6 +62,6 @@
     "nmc"
   ],
   "dependencies": {
-    "lucide-react": "^0.503.0"
+    "lucide-react": "^0.541.0"
   }
 }
